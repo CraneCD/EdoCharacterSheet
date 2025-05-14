@@ -1473,66 +1473,45 @@
       });
     });
 
-       // Function to create a new spell item with proper event handling
-    function createSpellItem(level = 0) {
-      const spellItem = document.createElement('div');
-      spellItem.className = 'spell-item';
-      
-      spellItem.innerHTML = `
-        <div class="spell-name-container">
-          <input type="text" placeholder="Spell name" class="spell-name-input" data-level="${level}">
-          <div class="spell-name-suggestions"></div>
-        </div>
-        <input type="text" placeholder="Casting Time">
-        <input type="text" placeholder="Range">
-        <button class="remove-spell">×</button>
-      `;
-      
-      // Add event listener for the remove button
-      const removeBtn = spellItem.querySelector('.remove-spell');
-      removeBtn.addEventListener('click', function() {
-        removeSpell(this);
-      });
-      
-      // Add event listener for the spell name input
-      const nameInput = spellItem.querySelector('.spell-name-input');
-      nameInput.addEventListener('input', function() {
-        showSpellSuggestions(this, level);
-      });
-      
-      return spellItem;
-    }
+// Function to create a new spell item
+function createSpellItem(level = 0) {
+  const spellItem = document.createElement('div');
+  spellItem.className = 'spell-item';
+  
+  spellItem.innerHTML = `
+    <div class="spell-name-container">
+      <input type="text" placeholder="Spell name" class="spell-name-input" data-level="${level}">
+      <div class="spell-name-suggestions"></div>
+    </div>
+    <input type="text" placeholder="Casting Time">
+    <input type="text" placeholder="Range">
+    <button class="remove-spell" onclick="removeSpell(this)">×</button>
+  `;
+  
+  return spellItem;
+}
 
-    // Function to remove a spell
-    function removeSpell(button) {
-      const spellItem = button.closest('.spell-item');
-      if (spellItem && spellItem.parentElement.querySelectorAll('.spell-item').length > 1) {
-        spellItem.remove();
-      } else {
-        alert("You must have at least one spell in each category.");
-      }
-    }
+// Function to remove a spell
+function removeSpell(button) {
+  const spellItem = button.closest('.spell-item');
+  if (spellItem && spellItem.parentElement.querySelectorAll('.spell-item').length > 1) {
+    spellItem.remove();
+  } else {
+    alert("You must have at least one spell in each category.");
+  }
+}
 
-    // Setup all spell add buttons
-    function setupSpellAddButtons() {
-      for (let i = 0; i <= 9; i++) {
-        const buttonId = i === 0 ? 'add-cantrip' : `add-level-${i}`;
-        const listId = i === 0 ? 'cantrips-list' : `level-${i}-list`;
-        
-        const button = document.getElementById(buttonId);
-        if (button) {
-          button.addEventListener('click', () => {
-            const spellList = document.getElementById(listId);
-            const newSpell = createSpellItem(i);
-            
-            // Insert before the add button
-            const addButton = document.getElementById(buttonId);
-            spellList.insertBefore(newSpell, addButton);
-          });
-        }
-      }
-    }
-
+// Add event listeners for all spell level buttons
+for (let i = 0; i <= 9; i++) {
+  const buttonId = i === 0 ? 'add-cantrip' : `add-level-${i}`;
+  const listId = i === 0 ? 'cantrips-list' : `level-${i}-list`;
+  
+  document.getElementById(buttonId)?.addEventListener('click', () => {
+    const spellList = document.getElementById(listId);
+    const newSpell = createSpellItem(i);
+    spellList.appendChild(newSpell);
+  });
+}
     // Add more equipment items
     document.getElementById('add-equipment').addEventListener('click', () => {
       const equipmentItems = document.getElementById('equipment-items');
