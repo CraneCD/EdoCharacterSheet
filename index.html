@@ -1,94 +1,1223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5e (2024) Character Creator</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&family=Metamorphous&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D 5e Character Sheet Creator</title>
+  <style>
+    :root {
+      --primary: #7b241c;
+      --secondary: #e6ccb2;
+      --background: #f5f5f5;
+      --text: #333;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 5px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    
+    .tab.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    .character-basics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    
+    .abilities {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .ability {
+      text-align: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: var(--secondary);
+    }
+    
+    .ability-score {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .ability-mod {
+      font-size: 18px;
+      background-color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      line-height: 30px;
+      margin-top: 5px;
+    }
+    
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .skill-item {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      border: 1px solid #eee;
+      border-radius: 3px;
+    }
+    
+    .skill-item input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .combat-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .combat-stat {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    .equipment {
+      margin-bottom: 20px;
+    }
+    
+    .equipment-list {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+    }
+    
+    .spells {
+      margin-bottom: 20px;
+    }
+    
+    .spell-list {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+    }
+    
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #5e1914;
+    }
+    
+    .save-load {
+      display: flex;
+      gap: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .character-basics,
+      .abilities,
+      .skills,
+      .combat-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1><i class="fas fa-dragon"></i> D&D 5e Character Creator</h1>
-            <p class="subtitle">Based on the 2024 Player's Handbook</p>
-            <div class="character-management">
-                <button id="newCharacter"><i class="fas fa-plus"></i> New</button>
-                <button id="saveCharacter"><i class="fas fa-save"></i> Save</button>
-                <button id="loadCharacter"><i class="fas fa-folder-open"></i> Load</button>
-                <button id="printCharacter"><i class="fas fa-print"></i> Print</button>
-            </div>
-        </header>
+  <div class="container">
+    <header>
+      <h1>D&D 5e Character Sheet Creator</h1>
+    </header>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="basics">Basics</div>
+      <div class="tab" data-tab="abilities">Abilities & Skills</div>
+      <div class="tab" data-tab="combat">Combat</div>
+      <div class="tab" data-tab="equipment">Equipment</div>
+      <div class="tab" data-tab="spells">Spells</div>
+      <div class="tab" data-tab="bio">Biography</div>
+    </div>
+    
+    <form id="character-form">
+      <!-- Basics Tab -->
+      <div class="tab-content active" id="basics">
+        <div class="character-basics">
+          <div class="form-group">
+            <label for="character-name">Character Name</label>
+            <input type="text" id="character-name" name="character-name">
+          </div>
+          
+          <div class="form-group">
+            <label for="class">Class</label>
+            <select id="class" name="class">
+              <option value="">Select Class</option>
+              <option value="barbarian">Barbarian</option>
+              <option value="bard">Bard</option>
+              <option value="cleric">Cleric</option>
+              <option value="druid">Druid</option>
+              <option value="fighter">Fighter</option>
+              <option value="monk">Monk</option>
+              <option value="paladin">Paladin</option>
+              <option value="ranger">Ranger</option>
+              <option value="rogue">Rogue</option>
+              <option value="sorcerer">Sorcerer</option>
+              <option value="warlock">Warlock</option>
+              <option value="wizard">Wizard</option>
+              <option value="artificer">Artificer</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="level">Level</label>
+            <input type="number" id="level" name="level" min="1" max="20" value="1">
+          </div>
+          
+          <div class="form-group">
+            <label for="race">Race</label>
+            <select id="race" name="race">
+              <option value="">Select Race</option>
+              <option value="dragonborn">Dragonborn</option>
+              <option value="dwarf">Dwarf</option>
+              <option value="elf">Elf</option>
+              <option value="gnome">Gnome</option>
+              <option value="half-elf">Half-Elf</option>
+              <option value="half-orc">Half-Orc</option>
+              <option value="halfling">Halfling</option>
+              <option value="human">Human</option>
+              <option value="tiefling">Tiefling</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="background">Background</label>
+            <select id="background" name="background">
+              <option value="">Select Background</option>
+              <option value="acolyte">Acolyte</option>
+              <option value="charlatan">Charlatan</option>
+              <option value="criminal">Criminal</option>
+              <option value="entertainer">Entertainer</option>
+              <option value="folk-hero">Folk Hero</option>
+              <option value="guild-artisan">Guild Artisan</option>
+              <option value="hermit">Hermit</option>
+              <option value="noble">Noble</option>
+              <option value="outlander">Outlander</option>
+              <option value="sage">Sage</option>
+              <option value="sailor">Sailor</option>
+              <option value="soldier">Soldier</option>
+              <option value="urchin">Urchin</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="alignment">Alignment</label>
+            <select id="alignment" name="alignment">
+              <option value="">Select Alignment</option>
+              <option value="lawful-good">Lawful Good</option>
+              <option value="neutral-good">Neutral Good</option>
+              <option value="chaotic-good">Chaotic Good</option>
+              <option value="lawful-neutral">Lawful Neutral</option>
+              <option value="true-neutral">True Neutral</option>
+              <option value="chaotic-neutral">Chaotic Neutral</option>
+              <option value="lawful-evil">Lawful Evil</option>
+              <option value="neutral-evil">Neutral Evil</option>
+              <option value="chaotic-evil">Chaotic Evil</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Abilities & Skills Tab -->
+      <div class="tab-content" id="abilities">
+        <h2>Ability Scores</h2>
+        <div class="abilities">
+          <div class="ability">
+            <label for="strength">Strength</label>
+            <input type="number" id="strength" name="strength" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="strength-mod">+0</div>
+          </div>
+          
+          <div class="ability">
+            <label for="dexterity">Dexterity</label>
+            <input type="number" id="dexterity" name="dexterity" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="dexterity-mod">+0</div>
+          </div>
+          
+          <div class="ability">
+            <label for="constitution">Constitution</label>
+            <input type="number" id="constitution" name="constitution" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="constitution-mod">+0</div>
+          </div>
+          
+          <div class="ability">
+            <label for="intelligence">Intelligence</label>
+            <input type="number" id="intelligence" name="intelligence" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="intelligence-mod">+0</div>
+          </div>
+          
+          <div class="ability">
+            <label for="wisdom">Wisdom</label>
+            <input type="number" id="wisdom" name="wisdom" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="wisdom-mod">+0</div>
+          </div>
+          
+          <div class="ability">
+            <label for="charisma">Charisma</label>
+            <input type="number" id="charisma" name="charisma" min="1" max="30" value="10" class="ability-input">
+            <div class="ability-mod" id="charisma-mod">+0</div>
+          </div>
+        </div>
         
-        <div class="character-creator">
-            <div class="creation-steps" id="creationSteps">
-                <!-- Steps injected by JavaScript -->
-            </div>
-            
-            <div class="character-sheet-preview" id="sheetPreview">
-                <div class="sheet-header">
-                    <div class="name-display" id="charName">New Adventurer</div>
-                    <div class="details-display">
-                        <span id="charRace">Race</span> • 
-                        <span id="charBackground">Background</span> • 
-                        <span id="charClass">Class</span> •
-                        Level <span id="charLevel">1</span>
-                    </div>
-                </div>
-                
-                <div class="sheet-columns">
-                    <div class="column-left">
-                        <div class="sheet-section abilities-section">
-                            <h3>Abilities</h3>
-                            <div class="abilities-grid" id="abilitiesGrid">
-                                <!-- Abilities injected by JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <div class="sheet-section proficiency-section">
-                            <h3>Proficiencies</h3>
-                            <div id="proficiencyList"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="column-right">
-                        <div class="sheet-section features-section">
-                            <h3>Features & Traits</h3>
-                            <div id="featuresList"></div>
-                        </div>
-                        
-                        <div class="sheet-section equipment-section">
-                            <h3>Equipment</h3>
-                            <div id="equipmentList"></div>
-                        </div>
-                        
-                        <div class="sheet-section spells-section" id="spellsSection">
-                            <h3>Spells</h3>
-                            <div id="spellsList"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="weapon-mastery-section" id="weaponMasterySection">
-                    <h3>Weapon Masteries</h3>
-                    <div id="masteryList"></div>
-                </div>
-            </div>
+        <h2>Skills</h2>
+        <div class="skills">
+          <div class="skill-item">
+            <input type="checkbox" id="acrobatics" name="acrobatics">
+            <label for="acrobatics">Acrobatics (DEX)</label>
+            <span class="skill-mod" id="acrobatics-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="animal-handling" name="animal-handling">
+            <label for="animal-handling">Animal Handling (WIS)</label>
+            <span class="skill-mod" id="animal-handling-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="arcana" name="arcana">
+            <label for="arcana">Arcana (INT)</label>
+            <span class="skill-mod" id="arcana-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="athletics" name="athletics">
+            <label for="athletics">Athletics (STR)</label>
+            <span class="skill-mod" id="athletics-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="deception" name="deception">
+            <label for="deception">Deception (CHA)</label>
+            <span class="skill-mod" id="deception-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="history" name="history">
+            <label for="history">History (INT)</label>
+            <span class="skill-mod" id="history-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="insight" name="insight">
+            <label for="insight">Insight (WIS)</label>
+            <span class="skill-mod" id="insight-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="intimidation" name="intimidation">
+            <label for="intimidation">Intimidation (CHA)</label>
+            <span class="skill-mod" id="intimidation-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="investigation" name="investigation">
+            <label for="investigation">Investigation (INT)</label>
+            <span class="skill-mod" id="investigation-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="medicine" name="medicine">
+            <label for="medicine">Medicine (WIS)</label>
+            <span class="skill-mod" id="medicine-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="nature" name="nature">
+            <label for="nature">Nature (INT)</label>
+            <span class="skill-mod" id="nature-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="perception" name="perception">
+            <label for="perception">Perception (WIS)</label>
+            <span class="skill-mod" id="perception-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="performance" name="performance">
+            <label for="performance">Performance (CHA)</label>
+            <span class="skill-mod" id="performance-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="persuasion" name="persuasion">
+            <label for="persuasion">Persuasion (CHA)</label>
+            <span class="skill-mod" id="persuasion-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="religion" name="religion">
+            <label for="religion">Religion (INT)</label>
+            <span class="skill-mod" id="religion-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="sleight-of-hand" name="sleight-of-hand">
+            <label for="sleight-of-hand">Sleight of Hand (DEX)</label>
+            <span class="skill-mod" id="sleight-of-hand-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="stealth" name="stealth">
+            <label for="stealth">Stealth (DEX)</label>
+            <span class="skill-mod" id="stealth-mod">+0</span>
+          </div>
+          
+          <div class="skill-item">
+            <input type="checkbox" id="survival" name="survival">
+            <label for="survival">Survival (WIS)</label>
+            <span class="skill-mod" id="survival-mod">+0</span>
+          </div>
         </div>
-    </div>
-
-    <!-- Modal for spell selection -->
-    <div class="modal" id="spellModal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Select Spells</h2>
-            <div class="spell-selection" id="spellSelection"></div>
-            <button id="confirmSpells">Confirm Selection</button>
+      </div>
+      
+      <!-- Combat Tab -->
+      <div class="tab-content" id="combat">
+        <div class="combat-info">
+          <div class="combat-stat">
+            <label for="armor-class">Armor Class</label>
+            <input type="number" id="armor-class" name="armor-class" min="0" value="10">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="initiative">Initiative</label>
+            <input type="text" id="initiative" name="initiative" readonly value="+0">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="speed">Speed</label>
+            <input type="number" id="speed" name="speed" min="0" value="30">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="max-hp">Max HP</label>
+            <input type="number" id="max-hp" name="max-hp" min="1" value="10">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="current-hp">Current HP</label>
+            <input type="number" id="current-hp" name="current-hp" min="0" value="10">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="temp-hp">Temporary HP</label>
+            <input type="number" id="temp-hp" name="temp-hp" min="0" value="0">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="hit-dice">Hit Dice</label>
+            <input type="text" id="hit-dice" name="hit-dice" value="1d8">
+          </div>
+          
+          <div class="combat-stat">
+            <label for="death-saves-success">Death Saves Success</label>
+            <div>
+              <input type="checkbox" id="death-success-1" name="death-success-1">
+              <input type="checkbox" id="death-success-2" name="death-success-2">
+              <input type="checkbox" id="death-success-3" name="death-success-3">
+            </div>
+          </div>
+          
+          <div class="combat-stat">
+            <label for="death-saves-fail">Death Saves Failure</label>
+            <div>
+              <input type="checkbox" id="death-fail-1" name="death-fail-1">
+              <input type="checkbox" id="death-fail-2" name="death-fail-2">
+              <input type="checkbox" id="death-fail-3" name="death-fail-3">
+            </div>
+          </div>
         </div>
-    </div>
-
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+        
+        <h3>Attacks & Spellcasting</h3>
+        <div class="form-group">
+          <table id="attacks-table" style="width:100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Attack Bonus</th>
+                <th>Damage/Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" name="attack-name-1"></td>
+                <td><input type="text" name="attack-bonus-1"></td>
+                <td><input type="text" name="attack-damage-1"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="attack-name-2"></td>
+                <td><input type="text" name="attack-bonus-2"></td>
+                <td><input type="text" name="attack-damage-2"></td>
+              </tr>
+              <tr>
+                <td><input type="text" name="attack-name-3"></td>
+                <td><input type="text" name="attack-bonus-3"></td>
+                <td><input type="text" name="attack-damage-3"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Equipment Tab -->
+      <div class="tab-content" id="equipment">
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <div style="display: flex; gap: 10px;">
+            <div>
+              <label for="cp">CP</label>
+              <input type="number" id="cp" name="cp" min="0" value="0" style="width: 70px;">
+            </div>
+            <div>
+              <label for="sp">SP</label>
+              <input type="number" id="sp" name="sp" min="0" value="0" style="width: 70px;">
+            </div>
+            <div>
+              <label for="ep">EP</label>
+              <input type="number" id="ep" name="ep" min="0" value="0" style="width: 70px;">
+            </div>
+            <div>
+              <label for="gp">GP</label>
+              <input type="number" id="gp" name="gp" min="0" value="0" style="width: 70px;">
+            </div>
+            <div>
+              <label for="pp">PP</label>
+              <input type="number" id="pp" name="pp" min="0" value="0" style="width: 70px;">
+            </div>
+          </div>
+        </div>
+        
+        <h3>Equipment List</h3>
+        <div class="form-group">
+          <div class="equipment-list">
+            <div id="equipment-items">
+              <div class="equipment-item" style="display: flex; margin-bottom: 5px;">
+                <input type="text" placeholder="Item name" style="flex: 3;">
+                <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
+                <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
+              </div>
+            </div>
+            <button type="button" id="add-equipment" style="margin-top: 10px;">Add Item</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Spells Tab -->
+      <div class="tab-content" id="spells">
+        <div class="form-group">
+          <label for="spellcasting-class">Spellcasting Class</label>
+          <select id="spellcasting-class" name="spellcasting-class">
+            <option value="">None</option>
+            <option value="bard">Bard</option>
+            <option value="cleric">Cleric</option>
+            <option value="druid">Druid</option>
+            <option value="paladin">Paladin</option>
+            <option value="ranger">Ranger</option>
+            <option value="sorcerer">Sorcerer</option>
+            <option value="warlock">Warlock</option>
+            <option value="wizard">Wizard</option>
+            <option value="artificer">Artificer</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="spellcasting-ability">Spellcasting Ability</label>
+          <select id="spellcasting-ability" name="spellcasting-ability">
+            <option value="">None</option>
+            <option value="intelligence">Intelligence</option>
+            <option value="wisdom">Wisdom</option>
+            <option value="charisma">Charisma</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="spell-save-dc">Spell Save DC</label>
+          <input type="text" id="spell-save-dc" name="spell-save-dc" readonly value="8">
+        </div>
+        
+        <div class="form-group">
+          <label for="spell-attack-bonus">Spell Attack Bonus</label>
+          <input type="text" id="spell-attack-bonus" name="spell-attack-bonus" readonly value="+0">
+        </div>
+        
+        <h3>Spell Slots</h3>
+        <div style="display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px;">
+          <div>
+            <label for="level-1-slots">Level 1</label>
+            <input type="number" id="level-1-slots" name="level-1-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-2-slots">Level 2</label>
+            <input type="number" id="level-2-slots" name="level-2-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-3-slots">Level 3</label>
+            <input type="number" id="level-3-slots" name="level-3-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-4-slots">Level 4</label>
+            <input type="number" id="level-4-slots" name="level-4-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-5-slots">Level 5</label>
+            <input type="number" id="level-5-slots" name="level-5-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-6-slots">Level 6</label>
+            <input type="number" id="level-6-slots" name="level-6-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-7-slots">Level 7</label>
+            <input type="number" id="level-7-slots" name="level-7-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-8-slots">Level 8</label>
+            <input type="number" id="level-8-slots" name="level-8-slots" min="0" value="0" style="width: 50px;">
+          </div>
+          <div>
+            <label for="level-9-slots">Level 9</label>
+            <input type="number" id="level-9-slots" name="level-9-slots" min="0" value="0" style="width: 50px;">
+          </div>
+        </div>
+        
+        <h3>Spells</h3>
+        <div class="spell-sections">
+          <h4>Cantrips</h4>
+          <div class="spell-list" id="cantrips-list">
+            <div class="spell-item" style="display: flex; margin-bottom: 5px;">
+              <input type="text" placeholder="Spell name" style="flex: 1;">
+              <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+              <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+            </div>
+            <button type="button" id="add-cantrip" style="margin-top: 10px;">Add Cantrip</button>
+          </div>
+          
+          <h4>Level 1 Spells</h4>
+          <div class="spell-list" id="level-1-list">
+            <div class="spell-item" style="display: flex; margin-bottom: 5px;">
+              <input type="text" placeholder="Spell name" style="flex: 1;">
+              <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+              <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+            </div>
+            <button type="button" id="add-level-1" style="margin-top: 10px;">Add Spell</button>
+          </div>
+          
+          <!-- Additional spell levels would go here -->
+        </div>
+      </div>
+      
+      <!-- Biography Tab -->
+      <div class="tab-content" id="bio">
+        <div class="form-group">
+          <label for="personality-traits">Personality Traits</label>
+          <textarea id="personality-traits" name="personality-traits" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="ideals">Ideals</label>
+          <textarea id="ideals" name="ideals" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="bonds">Bonds</label>
+          <textarea id="bonds" name="bonds" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="flaws">Flaws</label>
+          <textarea id="flaws" name="flaws" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="features">Features & Traits</label>
+          <textarea id="features" name="features" rows="5"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="backstory">Backstory</label>
+          <textarea id="backstory" name="backstory" rows="10"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="allies">Allies & Organizations</label>
+          <textarea id="allies" name="allies" rows="5"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="additional-notes">Additional Notes</label>
+          <textarea id="additional-notes" name="additional-notes" rows="5"></textarea>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <div class="save-load">
+          <button type="button" id="save-character">Save Character</button>
+          <button type="button" id="load-character">Load Character</button>
+          <button type="button" id="export-pdf">Export as PDF</button>
+        </div>
+        <button type="button" id="clear-form">Clear Form</button>
+      </div>
+    </form>
+  </div>
+  
+  <script>
+    // Tab Navigation
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        // Update active tab
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Show corresponding content
+        tabContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === targetTab) {
+            content.classList.add('active');
+          }
+        });
+      });
+    });
+    
+    // Calculate Ability Modifiers
+    const abilityInputs = document.querySelectorAll('.ability-input');
+    
+    function calculateModifier(score) {
+      return Math.floor((score - 10) / 2);
+    }
+    
+    function updateModifier(abilityId) {
+      const abilityScore = parseInt(document.getElementById(abilityId).value);
+      const modifier = calculateModifier(abilityScore);
+      const modSign = modifier >= 0 ? '+' : '';
+      document.getElementById(`${abilityId}-mod`).textContent = `${modSign}${modifier}`;
+      
+      // Update related skills
+      updateSkills();
+      
+      // Update initiative if dexterity changes
+      if (abilityId === 'dexterity') {
+        document.getElementById('initiative').value = `${modSign}${modifier}`;
+      }
+      
+      // Update spell save DC and attack bonus if spellcasting ability changes
+      updateSpellcasting();
+    }
+    
+    abilityInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        updateModifier(input.id);
+      });
+    });
+    
+    // Initialize ability modifiers
+    abilityInputs.forEach(input => {
+      updateModifier(input.id);
+    });
+    
+    // Update Skills based on ability modifiers and proficiency
+    function updateSkills() {
+      const proficiencyBonus = 2 + Math.ceil(parseInt(document.getElementById('level').value) / 4) - 1;
+      
+      const skillMappings = {
+        'acrobatics': 'dexterity',
+        'animal-handling': 'wisdom',
+        'arcana': 'intelligence',
+        'athletics': 'strength',
+        'deception': 'charisma',
+        'history': 'intelligence',
+        'insight': 'wisdom',
+        'intimidation': 'charisma',
+        'investigation': 'intelligence',
+        'medicine': 'wisdom',
+        'nature': 'intelligence',
+        'perception': 'wisdom',
+        'performance': 'charisma',
+        'persuasion': 'charisma',
+        'religion': 'intelligence',
+        'sleight-of-hand': 'dexterity',
+        'stealth': 'dexterity',
+        'survival': 'wisdom'
+      };
+      
+      Object.entries(skillMappings).forEach(([skill, ability]) => {
+        const abilityScore = parseInt(document.getElementById(ability).value);
+        const abilityMod = calculateModifier(abilityScore);
+        let skillMod = abilityMod;
+        
+        // Add proficiency bonus if proficient
+        if (document.getElementById(skill).checked) {
+          skillMod += proficiencyBonus;
+        }
+        
+        const modSign = skillMod >= 0 ? '+' : '';
+        document.getElementById(`${skill}-mod`).textContent = `${modSign}${skillMod}`;
+      });
+    }
+    
+    // Add event listeners to skill checkboxes
+    document.querySelectorAll('.skill-item input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', updateSkills);
+    });
+    
+    // Update level dependent calculations
+    document.getElementById('level').addEventListener('change', () => {
+      updateSkills();
+      updateSpellcasting();
+      updateHitDice();
+    });
+    
+    // Update Hit Dice based on class and level
+    function updateHitDice() {
+      const level = parseInt(document.getElementById('level').value);
+      const characterClass = document.getElementById('class').value;
+      let hitDie = 'd8'; // default
+      
+      // Set hit die based on class
+      switch(characterClass) {
+        case 'barbarian':
+          hitDie = 'd12';
+          break;
+        case 'fighter':
+        case 'paladin':
+        case 'ranger':
+          hitDie = 'd10';
+          break;
+        case 'sorcerer':
+        case 'wizard':
+          hitDie = 'd6';
+          break;
+        default:
+          hitDie = 'd8';
+      }
+      
+      document.getElementById('hit-dice').value = `${level}${hitDie}`;
+    }
+    
+    // Update hit dice when class changes
+    document.getElementById('class').addEventListener('change', updateHitDice);
+    
+    // Update Spellcasting information
+    function updateSpellcasting() {
+      const spellcastingAbility = document.getElementById('spellcasting-ability').value;
+      if (!spellcastingAbility) return;
+      
+      const abilityScore = parseInt(document.getElementById(spellcastingAbility).value);
+      const abilityMod = calculateModifier(abilityScore);
+      const proficiencyBonus = 2 + Math.ceil(parseInt(document.getElementById('level').value) / 4) - 1;
+      
+      // Calculate spell save DC: 8 + proficiency + ability modifier
+      const saveDC = 8 + proficiencyBonus + abilityMod;
+      document.getElementById('spell-save-dc').value = saveDC;
+      
+      // Calculate spell attack bonus: proficiency + ability modifier
+      const attackBonus = proficiencyBonus + abilityMod;
+      const modSign = attackBonus >= 0 ? '+' : '';
+      document.getElementById('spell-attack-bonus').value = `${modSign}${attackBonus}`;
+    }
+    
+    // Update spell calculations when spellcasting ability changes
+    document.getElementById('spellcasting-ability').addEventListener('change', updateSpellcasting);
+    
+    // Update spellcasting class options based on character class
+    document.getElementById('class').addEventListener('change', () => {
+      const characterClass = document.getElementById('class').value;
+      const spellcastingClass = document.getElementById('spellcasting-class');
+      
+      if (['bard', 'cleric', 'druid', 'paladin', 'ranger', 'sorcerer', 'warlock', 'wizard', 'artificer'].includes(characterClass)) {
+        spellcastingClass.value = characterClass;
+        
+        // Set default spellcasting ability based on class
+        const abilityMapping = {
+          'bard': 'charisma',
+          'cleric': 'wisdom',
+          'druid': 'wisdom',
+          'paladin': 'charisma',
+          'ranger': 'wisdom',
+          'sorcerer': 'charisma',
+          'warlock': 'charisma',
+          'wizard': 'intelligence',
+          'artificer': 'intelligence'
+        };
+        
+        document.getElementById('spellcasting-ability').value = abilityMapping[characterClass];
+        updateSpellcasting();
+      }
+    });
+    
+    // Add more equipment items
+    document.getElementById('add-equipment').addEventListener('click', () => {
+      const equipmentItems = document.getElementById('equipment-items');
+      const newItem = document.createElement('div');
+      newItem.className = 'equipment-item';
+      newItem.style = 'display: flex; margin-bottom: 5px;';
+      
+      newItem.innerHTML = `
+        <input type="text" placeholder="Item name" style="flex: 3;">
+        <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
+        <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
+      `;
+      
+      equipmentItems.appendChild(newItem);
+    });
+    
+    // Add more cantrips
+    document.getElementById('add-cantrip').addEventListener('click', () => {
+      const cantrips = document.getElementById('cantrips-list');
+      const newSpell = document.createElement('div');
+      newSpell.className = 'spell-item';
+      newSpell.style = 'display: flex; margin-bottom: 5px;';
+      
+      newSpell.innerHTML = `
+        <input type="text" placeholder="Spell name" style="flex: 1;">
+        <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+        <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+      `;
+      
+      cantrips.insertBefore(newSpell, document.getElementById('add-cantrip'));
+    });
+    
+    // Add more level 1 spells
+    document.getElementById('add-level-1').addEventListener('click', () => {
+      const lvl1Spells = document.getElementById('level-1-list');
+      const newSpell = document.createElement('div');
+      newSpell.className = 'spell-item';
+      newSpell.style = 'display: flex; margin-bottom: 5px;';
+      
+      newSpell.innerHTML = `
+        <input type="text" placeholder="Spell name" style="flex: 1;">
+        <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+        <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+      `;
+      
+      lvl1Spells.insertBefore(newSpell, document.getElementById('add-level-1'));
+    });
+    
+    // Save character data
+    document.getElementById('save-character').addEventListener('click', () => {
+      const formData = new FormData(document.getElementById('character-form'));
+      const characterData = {};
+      
+      formData.forEach((value, key) => {
+        characterData[key] = value;
+      });
+      
+      // Handle equipment items
+      const equipmentItems = [];
+      document.querySelectorAll('.equipment-item').forEach(item => {
+        const inputs = item.querySelectorAll('input');
+        equipmentItems.push({
+          name: inputs[0].value,
+          quantity: inputs[1].value,
+          weight: inputs[2].value
+        });
+      });
+      characterData.equipment = equipmentItems;
+      
+      // Handle spells
+      const cantrips = [];
+      document.querySelectorAll('#cantrips-list .spell-item').forEach(spell => {
+        const inputs = spell.querySelectorAll('input');
+        cantrips.push({
+          name: inputs[0].value,
+          castingTime: inputs[1].value,
+          range: inputs[2].value
+        });
+      });
+      characterData.cantrips = cantrips;
+      
+      const level1Spells = [];
+      document.querySelectorAll('#level-1-list .spell-item').forEach(spell => {
+        const inputs = spell.querySelectorAll('input');
+        level1Spells.push({
+          name: inputs[0].value,
+          castingTime: inputs[1].value,
+          range: inputs[2].value
+        });
+      });
+      characterData.level1Spells = level1Spells;
+      
+      // Save to local storage
+      const characterName = document.getElementById('character-name').value || 'unnamed-character';
+      localStorage.setItem(`dnd-character-${characterName}`, JSON.stringify(characterData));
+      
+      alert(`Character "${characterName}" saved successfully!`);
+    });
+    
+    // Load character data
+    document.getElementById('load-character').addEventListener('click', () => {
+      const characterName = prompt('Enter the name of the character to load:');
+      if (!characterName) return;
+      
+      const characterData = localStorage.getItem(`dnd-character-${characterName}`);
+      if (!characterData) {
+        alert(`No character found with the name "${characterName}"`);
+        return;
+      }
+      
+      const data = JSON.parse(characterData);
+      
+      // Clear form
+      document.getElementById('clear-form').click();
+      
+      // Populate form fields
+      Object.entries(data).forEach(([key, value]) => {
+        if (key !== 'equipment' && key !== 'cantrips' && key !== 'level1Spells') {
+          const field = document.getElementById(key);
+          if (field) {
+            if (field.type === 'checkbox') {
+              field.checked = value === 'on';
+            } else {
+              field.value = value;
+            }
+          }
+        }
+      });
+      
+      // Update calculations
+      abilityInputs.forEach(input => {
+        updateModifier(input.id);
+      });
+      
+      // Load equipment
+      if (data.equipment && data.equipment.length > 0) {
+        const equipmentContainer = document.getElementById('equipment-items');
+        equipmentContainer.innerHTML = ''; // Clear existing items
+        
+        data.equipment.forEach(item => {
+          const newItem = document.createElement('div');
+          newItem.className = 'equipment-item';
+          newItem.style = 'display: flex; margin-bottom: 5px;';
+          
+          newItem.innerHTML = `
+            <input type="text" placeholder="Item name" style="flex: 3;" value="${item.name || ''}">
+            <input type="number" placeholder="Qty" min="1" style="flex: 1; margin-left: 5px;" value="${item.quantity || 1}">
+            <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;" value="${item.weight || ''}">
+          `;
+          
+          equipmentContainer.appendChild(newItem);
+        });
+      }
+      
+      // Load cantrips
+      if (data.cantrips && data.cantrips.length > 0) {
+        const cantripsContainer = document.getElementById('cantrips-list');
+        // Clear existing spells but keep the Add button
+        const addButton = document.getElementById('add-cantrip');
+        cantripsContainer.innerHTML = '';
+        cantripsContainer.appendChild(addButton);
+        
+        data.cantrips.forEach(spell => {
+          const newSpell = document.createElement('div');
+          newSpell.className = 'spell-item';
+          newSpell.style = 'display: flex; margin-bottom: 5px;';
+          
+          newSpell.innerHTML = `
+            <input type="text" placeholder="Spell name" style="flex: 1;" value="${spell.name || ''}">
+            <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;" value="${spell.castingTime || ''}">
+            <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;" value="${spell.range || ''}">
+          `;
+          
+          cantripsContainer.insertBefore(newSpell, addButton);
+        });
+      }
+      
+      // Load level 1 spells
+      if (data.level1Spells && data.level1Spells.length > 0) {
+        const spellsContainer = document.getElementById('level-1-list');
+        // Clear existing spells but keep the Add button
+        const addButton = document.getElementById('add-level-1');
+        spellsContainer.innerHTML = '';
+        spellsContainer.appendChild(addButton);
+        
+        data.level1Spells.forEach(spell => {
+          const newSpell = document.createElement('div');
+          newSpell.className = 'spell-item';
+          newSpell.style = 'display: flex; margin-bottom: 5px;';
+          
+          newSpell.innerHTML = `
+            <input type="text" placeholder="Spell name" style="flex: 1;" value="${spell.name || ''}">
+            <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;" value="${spell.castingTime || ''}">
+            <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;" value="${spell.range || ''}">
+          `;
+          
+          spellsContainer.insertBefore(newSpell, addButton);
+        });
+      }
+      
+      alert(`Character "${characterName}" loaded successfully!`);
+    });
+    
+    // Clear form
+    document.getElementById('clear-form').addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all character data?')) {
+        document.getElementById('character-form').reset();
+        
+        // Reset ability modifiers
+        abilityInputs.forEach(input => {
+          input.value = 10;
+          updateModifier(input.id);
+        });
+        
+        // Reset equipment
+        const equipmentContainer = document.getElementById('equipment-items');
+        equipmentContainer.innerHTML = `
+          <div class="equipment-item" style="display: flex; margin-bottom: 5px;">
+            <input type="text" placeholder="Item name" style="flex: 3;">
+            <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
+            <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
+          </div>
+        `;
+        
+        // Reset spells
+        const cantripsContainer = document.getElementById('cantrips-list');
+        const cantripsAddButton = document.getElementById('add-cantrip');
+        cantripsContainer.innerHTML = `
+          <div class="spell-item" style="display: flex; margin-bottom: 5px;">
+            <input type="text" placeholder="Spell name" style="flex: 1;">
+            <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+            <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+          </div>
+        `;
+        cantripsContainer.appendChild(cantripsAddButton);
+        
+        const level1Container = document.getElementById('level-1-list');
+        const level1AddButton = document.getElementById('add-level-1');
+        level1Container.innerHTML = `
+          <div class="spell-item" style="display: flex; margin-bottom: 5px;">
+            <input type="text" placeholder="Spell name" style="flex: 1;">
+            <input type="text" placeholder="Casting Time" style="flex: 1; margin-left: 5px;">
+            <input type="text" placeholder="Range" style="flex: 1; margin-left: 5px;">
+          </div>
+        `;
+        level1Container.appendChild(level1AddButton);
+      }
+    });
+    
+    // Export as PDF (stub - would require additional libraries for implementation)
+    document.getElementById('export-pdf').addEventListener('click', () => {
+      alert('PDF export functionality would require a PDF generation library like jsPDF or a server-side component. For now, you can save your character data and print the page using your browser.');
+      window.print();
+    });
+    
+    // Initialize the form
+    updateHitDice();
+    updateSkills();
+    updateSpellcasting();
+  </script>
 </body>
 </html>
