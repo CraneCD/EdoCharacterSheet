@@ -568,6 +568,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// --- Add/Remove Attack Rows ---
+document.addEventListener('DOMContentLoaded', () => {
+  const attacksTableBody = document.querySelector('#attacks-table tbody');
+
+  function createAttackRow() {
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+      <td><input type="text" name="attack-name"></td>
+      <td><input type="text" name="attack-bonus"></td>
+      <td><input type="text" name="attack-damage"></td>
+      <td><button type="button" class="remove-attack-row">×</button></td>
+    `;
+
+    // Remove this row when the "×" button is clicked
+    row.querySelector('.remove-attack-row').addEventListener('click', () => {
+      row.remove();
+    });
+
+    return row;
+  }
+
+  // Add row on button click
+  document.getElementById('add-attack-row').addEventListener('click', () => {
+    const newRow = createAttackRow();
+    attacksTableBody.appendChild(newRow);
+  });
+
+  // Enable "×" buttons on existing rows
+  document.querySelectorAll('.remove-attack-row').forEach(button => {
+    button.addEventListener('click', () => {
+      button.closest('tr').remove();
+    });
+  });
+});
+
 // Update spellcasting class options based on character class
 document.getElementById('class').addEventListener('change', () => {
   const characterClass = document.getElementById('class').value;
