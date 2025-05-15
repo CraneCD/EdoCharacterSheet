@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add more equipment items
 document.getElementById('add-equipment').addEventListener('click', () => {
-  const equipmentItems = document.getElementById('equipment-item');
+  const equipmentItems = document.getElementById('equipment-items');
   const newItem = document.createElement('div');
   newItem.className = 'equipment-item';
   newItem.style = 'display: flex; margin-bottom: 5px;';
@@ -680,35 +680,9 @@ document.getElementById('add-equipment').addEventListener('click', () => {
     <input type="text" placeholder="Item name" style="flex: 3;">
     <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
     <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
-    <button type="button" class="remove-equipment" style="margin-left: 5px;">×</button>
   `;
-  
-  // Add click handler for the remove button
-  newItem.querySelector('.remove-equipment').addEventListener('click', () => {
-    newItem.remove();
-  });
   
   equipmentItems.appendChild(newItem);
-});
-
-// Add event listeners to existing remove buttons when loading a character
-// Add this inside the load character functionality where equipment items are created:
-const equipmentContainer = document.getElementById('equipment-item');
-equipmentContainer.innerHTML = '';
-(data.equipment || []).forEach(item => {
-  const newItem = document.createElement('div');
-  newItem.className = 'equipment-item';
-  newItem.style = 'display: flex; margin-bottom: 5px;';
-  newItem.innerHTML = `
-    <input type="text" placeholder="Item name" style="flex: 3;" value="${item.name || ''}">
-    <input type="number" placeholder="Qty" min="1" style="flex: 1; margin-left: 5px;" value="${item.quantity || 1}">
-    <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;" value="${item.weight || ''}">
-    <button type="button" class="remove-equipment" style="margin-left: 5px;">×</button>
-  `;
-  newItem.querySelector('.remove-equipment').addEventListener('click', () => {
-    newItem.remove();
-  });
-  equipmentContainer.appendChild(newItem);
 });
 
 // Helper: Collect attacks data
@@ -816,7 +790,7 @@ document.getElementById('load-character').addEventListener('click', () => {
         });
 
         // Equipment
-        const equipmentContainer = document.getElementById('equipment-item');
+        const equipmentContainer = document.getElementById('equipment-items');
         equipmentContainer.innerHTML = '';
         (data.equipment || []).forEach(item => {
           const newItem = document.createElement('div');
@@ -877,7 +851,7 @@ document.getElementById('clear-form').addEventListener('click', () => {
     });
     
     // Reset equipment
-    const equipmentContainer = document.getElementById('equipment-item');
+    const equipmentContainer = document.getElementById('equipment-items');
     equipmentContainer.innerHTML = `
       <div class="equipment-item" style="display: flex; margin-bottom: 5px;">
         <input type="text" placeholder="Item name" style="flex: 3;">
