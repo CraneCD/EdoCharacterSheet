@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D 5e Tools</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .landing-container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 20px;
+        }
+        .tool-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .tool-button {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .tool-button:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <h1>D&D 5e Tools</h1>
+        <p>Select a tool to get started:</p>
+        <div class="tool-buttons">
+            <button class="tool-button" onclick="window.open('character-sheet.html', '_blank')">Character Sheet Creator</button>
+            <button class="tool-button" onclick="window.open('spell-lookup.html', '_blank')">Spell Database</button>
+        </div>
+    </div>
+</body>
+</html> 

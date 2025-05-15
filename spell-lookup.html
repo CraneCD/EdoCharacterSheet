@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D 5.5e Spell Lookup</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .spell-lookup-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .spell-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .spell-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        .spell-list {
+            border-right: 1px solid #ddd;
+            padding-right: 20px;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .spell-item {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .spell-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .spell-details {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .spell-details h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .spell-content {
+                grid-template-columns: 1fr;
+            }
+
+            .spell-list {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+                padding-right: 0;
+                padding-bottom: 20px;
+                height: 300px;
+            }
+
+            .spell-details {
+                height: auto;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="spell-lookup-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+            <h1>D&D 5.5e Spell Lookup</h1>
+            <button class="nav-button" onclick="window.open('character-sheet.html', '_blank')">Open Character Sheet</button>
+        </div>
+        <div class="spell-filters">
+            <div>
+                <label for="class-select">Class:</label>
+                <select id="class-select">
+                    <option value="">All Classes</option>
+                </select>
+            </div>
+            <div>
+                <label for="level-select">Spell Level:</label>
+                <select id="level-select">
+                    <option value="-1">All Levels</option>
+                </select>
+            </div>
+        </div>
+        <div class="spell-content">
+            <div class="spell-list" id="spell-list">
+                <!-- Spell list will be populated here -->
+            </div>
+            <div class="spell-details" id="spell-details">
+                <!-- Spell details will be shown here -->
+                <p class="placeholder">Select a spell to view its details</p>
+            </div>
+        </div>
+    </div>
+    <script src="spell-lookup.js"></script>
+</body>
+</html> 
