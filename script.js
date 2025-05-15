@@ -1,3 +1,139 @@
+// Subclass definitions based on 2024 PHB and Artificer
+const subclasses = {
+  artificer: {
+    level: 3,
+    options: [
+      "Alchemist",
+      "Armorer",
+      "Artillerist",
+      "Battle Smith"
+    ]
+  },
+  barbarian: {
+    level: 3,
+    options: [
+      "Path of the Berserker",
+      "Path of the Storm Herald",
+      "Path of the Wild Heart",
+      "Path of the Zealot"
+    ]
+  },
+  bard: {
+    level: 3,
+    options: [
+      "College of Creation",
+      "College of Glamour",
+      "College of Lore",
+      "College of Spirits",
+      "College of Swords",
+      "College of Valor"
+    ]
+  },
+  cleric: {
+    level: 1,
+    options: [
+      "Life Domain",
+      "Light Domain",
+      "Nature Domain",
+      "Protection Domain",
+      "Trickery Domain",
+      "War Domain"
+    ]
+  },
+  druid: {
+    level: 2,
+    options: [
+      "Circle of the Land",
+      "Circle of the Moon",
+      "Circle of the Shepherd",
+      "Circle of the Stars",
+      "Circle of Wildfire"
+    ]
+  },
+  fighter: {
+    level: 3,
+    options: [
+      "Battle Master",
+      "Champion",
+      "Eldritch Knight",
+      "Psi Knight",
+      "Rune Knight"
+    ]
+  },
+  monk: {
+    level: 3,
+    options: [
+      "Way of Mercy",
+      "Way of Shadow",
+      "Way of the Ascendant Dragon",
+      "Way of the Open Hand"
+    ]
+  },
+  paladin: {
+    level: 3,
+    options: [
+      "Oath of Devotion",
+      "Oath of Glory",
+      "Oath of the Ancients",
+      "Oath of Vengeance"
+    ]
+  },
+  ranger: {
+    level: 3,
+    options: [
+      "Beast Master",
+      "Fey Wanderer",
+      "Gloom Stalker",
+      "Hunter",
+      "Swarmkeeper"
+    ]
+  },
+  rogue: {
+    level: 3,
+    options: [
+      "Arcane Trickster",
+      "Assassin",
+      "Phantom",
+      "Swashbuckler",
+      "Thief"
+    ]
+  },
+  sorcerer: {
+    level: 1,
+    options: [
+      "Aberrant Mind",
+      "Clockwork Soul",
+      "Divine Soul",
+      "Draconic Bloodline",
+      "Storm Sorcery",
+      "Wild Magic"
+    ]
+  },
+  warlock: {
+    level: 1,
+    options: [
+      "The Archfey",
+      "The Celestial",
+      "The Fiend",
+      "The Great Old One",
+      "The Undying"
+    ]
+  },
+  wizard: {
+    level: 2,
+    options: [
+      "School of Abjuration",
+      "School of Conjuration",
+      "School of Divination",
+      "School of Enchantment",
+      "School of Evocation",
+      "School of Illusion",
+      "School of Necromancy",
+      "School of Transmutation"
+    ]
+  }
+};
+
 // Tab Navigation
 const tabs = document.querySelectorAll('.tab');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -118,7 +254,7 @@ function updateHitDice() {
   const characterClass = document.getElementById('class').value;
   let hitDie = 'd8'; // default
   
-  // Set hit die based on class
+  // Set hit die based on class (updated for 5.5e)
   switch(characterClass) {
     case 'barbarian':
       hitDie = 'd12';
@@ -133,7 +269,7 @@ function updateHitDice() {
       hitDie = 'd6';
       break;
     default:
-      hitDie = 'd8';
+      hitDie = 'd8'; // bard, cleric, druid, monk, rogue, warlock
   }
   
   document.getElementById('hit-dice').value = `${level}${hitDie}`;
@@ -412,74 +548,96 @@ const classSpellLists = {
     9: ["Astral Projection", "Gate", "Mass Heal", "True Resurrection"]
   },
   druid: {
-    0: ["Druidcraft", "Guidance", "Mending", "Poison Spray", "Produce Flame", "Resistance", "Shillelagh", "Thorn Whip"],
-    1: ["Animal Friendship", "Charm Person", "Create or Destroy Water", "Cure Wounds", "Detect Magic", "Detect Poison and Disease", "Entangle", "Faerie Fire", "Fog Cloud", "Goodberry", "Healing Word", "Jump", "Longstrider", "Purify Food and Drink", "Speak with Animals", "Thunderwave"],
-    2: ["Animal Messenger", "Barkskin", "Beast Sense", "Darkvision", "Enhance Ability", "Find Traps", "Flame Blade", "Gust of Wind", "Heat Metal", "Hold Person", "Lesser Restoration", "Locate Animals or Plants", "Locate Object", "Moonbeam", "Pass without Trace", "Protection from Poison", "Spike Growth"],
-    3: ["Call Lightning", "Conjure Animals", "Daylight", "Dispel Magic", "Feign Death", "Meld into Stone", "Plant Growth", "Protection from Energy", "Sleet Storm", "Speak with Plants", "Water Breathing", "Water Walk", "Wind Wall"],
-    4: ["Blight", "Confusion", "Conjure Minor Elementals", "Conjure Woodland Beings", "Control Water", "Dominate Beast", "Freedom of Movement", "Giant Insect", "Grasping Vine", "Hallucinatory Terrain", "Ice Storm", "Locate Creature", "Polymorph", "Stone Shape", "Stoneskin", "Wall of Fire"],
-    5: ["Antilife Shell", "Awaken", "Commune with Nature", "Conjure Elemental", "Contagion", "Geas", "Greater Restoration", "Insect Plague", "Mass Cure Wounds", "Planar Binding", "Reincarnate", "Scrying", "Tree Stride", "Wall of Stone"],
-    6: ["Conjure Fey", "Find the Path", "Heal", "Heroes' Feast", "Move Earth", "Sunbeam", "Transport via Plants", "Wall of Thorns", "Wind Walk"],
-    7: ["Fire Storm", "Mirage Arcane", "Plane Shift", "Regenerate", "Reverse Gravity"],
-    8: ["Animal Shapes", "Antipathy/Sympathy", "Control Weather", "Earthquake", "Feeblemind", "Sunburst", "Tsunami"],
-    9: ["Foresight", "Shapechange", "Storm of Vengeance", "True Resurrection"]
+    level: 2,
+    options: [
+      "Circle of the Land",
+      "Circle of the Moon",
+      "Circle of the Shepherd",
+      "Circle of the Stars",
+      "Circle of Wildfire"
+    ]
+  },
+  fighter: {
+    level: 3,
+    options: [
+      "Battle Master",
+      "Champion",
+      "Eldritch Knight",
+      "Psi Knight",
+      "Rune Knight"
+    ]
+  },
+  monk: {
+    level: 3,
+    options: [
+      "Way of Mercy",
+      "Way of Shadow",
+      "Way of the Ascendant Dragon",
+      "Way of the Open Hand"
+    ]
   },
   paladin: {
-    1: ["Bless", "Command", "Compelled Duel", "Cure Wounds", "Detect Evil and Good", "Detect Magic", "Detect Poison and Disease", "Divine Favor", "Heroism", "Protection from Evil and Good", "Purify Food and Drink", "Searing Smite", "Shield of Faith", "Thunderous Smite", "Wrathful Smite"],
-    2: ["Aid", "Branding Smite", "Find Steed", "Lesser Restoration", "Locate Object", "Magic Weapon", "Protection from Poison", "Zone of Truth"],
-    3: ["Aura of Vitality", "Blinding Smite", "Create Food and Water", "Crusader's Mantle", "Daylight", "Dispel Magic", "Elemental Weapon", "Magic Circle", "Remove Curse", "Revivify"],
-    4: ["Aura of Life", "Aura of Purity", "Banishment", "Death Ward", "Locate Creature", "Staggering Smite"],
-    5: ["Banishing Smite", "Circle of Power", "Destructive Wave", "Dispel Evil and Good", "Geas", "Raise Dead"]
+    level: 3,
+    options: [
+      "Oath of Devotion",
+      "Oath of Glory",
+      "Oath of the Ancients",
+      "Oath of Vengeance"
+    ]
   },
   ranger: {
-    1: ["Alarm", "Animal Friendship", "Cure Wounds", "Detect Magic", "Detect Poison and Disease", "Ensnaring Strike", "Fog Cloud", "Goodberry", "Hail of Thorns", "Hunter's Mark", "Jump", "Longstrider", "Speak with Animals"],
-    2: ["Animal Messenger", "Barkskin", "Beast Sense", "Cordon of Arrows", "Darkvision", "Find Traps", "Lesser Restoration", "Locate Animals or Plants", "Locate Object", "Pass without Trace", "Protection from Poison", "Silence", "Spike Growth"],
-    3: ["Conjure Animals", "Conjure Barrage", "Daylight", "Lightning Arrow", "Nondetection", "Plant Growth", "Protection from Energy", "Speak with Plants", "Water Breathing", "Water Walk", "Wind Wall"],
-    4: ["Conjure Woodland Beings", "Freedom of Movement", "Grasping Vine", "Locate Creature", "Stoneskin"],
-    5: ["Commune with Nature", "Conjure Volley", "Swift Quiver", "Tree Stride"]
+    level: 3,
+    options: [
+      "Beast Master",
+      "Fey Wanderer",
+      "Gloom Stalker",
+      "Hunter",
+      "Swarmkeeper"
+    ]
+  },
+  rogue: {
+    level: 3,
+    options: [
+      "Arcane Trickster",
+      "Assassin",
+      "Phantom",
+      "Swashbuckler",
+      "Thief"
+    ]
   },
   sorcerer: {
-    0: ["Acid Splash", "Blade Ward", "Chill Touch", "Dancing Lights", "Fire Bolt", "Friends", "Light", "Mage Hand", "Mending", "Message", "Minor Illusion", "Poison Spray", "Prestidigitation", "Ray of Frost", "Shocking Grasp", "True Strike"],
-    1: ["Burning Hands", "Charm Person", "Color Spray", "Comprehend Languages", "Detect Magic", "Disguise Self", "Expeditious Retreat", "False Life", "Feather Fall", "Fog Cloud", "Jump", "Mage Armor", "Magic Missile", "Shield", "Silent Image", "Sleep", "Thunderwave"],
-    2: ["Alter Self", "Blindness/Deafness", "Blur", "Darkness", "Darkvision", "Enhance Ability", "Enlarge/Reduce", "Gust of Wind", "Hold Person", "Invisibility", "Knock", "Levitate", "Mirror Image", "Misty Step", "Scorching Ray", "See Invisibility", "Shatter", "Spider Climb", "Suggestion", "Web"],
-    3: ["Blink", "Clairvoyance", "Counterspell", "Daylight", "Dispel Magic", "Fear", "Fireball", "Fly", "Gaseous Form", "Haste", "Hypnotic Pattern", "Lightning Bolt", "Major Image", "Protection from Energy", "Sleet Storm", "Slow", "Stinking Cloud", "Tongues", "Water Breathing", "Water Walk"],
-    4: ["Banishment", "Blight", "Confusion", "Dimension Door", "Dominate Beast", "Greater Invisibility", "Ice Storm", "Polymorph", "Stoneskin", "Wall of Fire"],
-    5: ["Animate Objects", "Cloudkill", "Cone of Cold", "Creation", "Dominate Person", "Hold Monster", "Insect Plague", "Seeming", "Telekinesis", "Teleportation Circle", "Wall of Stone"],
-    6: ["Arcane Gate", "Chain Lightning", "Circle of Death", "Disintegrate", "Eyebite", "Globe of Invulnerability", "Mass Suggestion", "Move Earth", "Sunbeam", "True Seeing"],
-    7: ["Delayed Blast Fireball", "Etherealness", "Finger of Death", "Fire Storm", "Plane Shift", "Prismatic Spray", "Reverse Gravity", "Teleport"],
-    8: ["Dominate Monster", "Earthquake", "Incendiary Cloud", "Power Word Stun", "Sunburst"],
-    9: ["Gate", "Meteor Swarm", "Power Word Kill", "Time Stop", "Wish"]
+    level: 1,
+    options: [
+      "Aberrant Mind",
+      "Clockwork Soul",
+      "Divine Soul",
+      "Draconic Bloodline",
+      "Storm Sorcery",
+      "Wild Magic"
+    ]
   },
   warlock: {
-    0: ["Blade Ward", "Chill Touch", "Eldritch Blast", "Friends", "Mage Hand", "Minor Illusion", "Poison Spray", "Prestidigitation", "True Strike"],
-    1: ["Armor of Agathys", "Arms of Hadar", "Charm Person", "Comprehend Languages", "Expeditious Retreat", "Hellish Rebuke", "Hex", "Illusory Script", "Protection from Evil and Good", "Unseen Servant", "Witch Bolt"],
-    2: ["Cloud of Daggers", "Crown of Madness", "Darkness", "Enthrall", "Hold Person", "Invisibility", "Mirror Image", "Misty Step", "Ray of Enfeeblement", "Shatter", "Spider Climb", "Suggestion"],
-    3: ["Counterspell", "Dispel Magic", "Fear", "Fly", "Gaseous Form", "Hunger of Hadar", "Hypnotic Pattern", "Magic Circle", "Major Image", "Remove Curse", "Tongues", "Vampiric Touch"],
-    4: ["Banishment", "Blight", "Dimension Door", "Hallucinatory Terrain", "Evard's Black Tentacles", "Sickening Radiance"],
-    5: ["Contact Other Plane", "Dream", "Hold Monster", "Scrying", "Teleportation Circle"],
-    6: ["Arcane Gate", "Circle of Death", "Conjure Fey", "Create Undead", "Eyebite", "Flesh to Stone", "Mass Suggestion", "True Seeing"],
-    7: ["Etherealness", "Finger of Death", "Forcecage", "Plane Shift"],
-    8: ["Demiplane", "Dominate Monster", "Feeblemind", "Glibness", "Power Word Stun"],
-    9: ["Astral Projection", "Foresight", "Imprisonment", "Power Word Kill", "True Polymorph"]
+    level: 1,
+    options: [
+      "The Archfey",
+      "The Celestial",
+      "The Fiend",
+      "The Great Old One",
+      "The Undying"
+    ]
   },
   wizard: {
-    0: ["Acid Splash", "Blade Ward", "Chill Touch", "Dancing Lights", "Fire Bolt", "Friends", "Light", "Mage Hand", "Mending", "Message", "Minor Illusion", "Poison Spray", "Prestidigitation", "Ray of Frost", "Shocking Grasp", "True Strike"],
-    1: ["Alarm", "Burning Hands", "Charm Person", "Color Spray", "Comprehend Languages", "Detect Magic", "Disguise Self", "Expeditious Retreat", "False Life", "Feather Fall", "Find Familiar", "Fog Cloud", "Grease", "Identify", "Illusory Script", "Jump", "Longstrider", "Mage Armor", "Magic Missile", "Protection from Evil and Good", "Shield", "Silent Image", "Sleep", "Tasha's Hideous Laughter", "Tenser's Floating Disk", "Thunderwave", "Unseen Servant", "Witch Bolt"],
-    2: ["Alter Self", "Arcane Lock", "Blindness/Deafness", "Blur", "Cloud of Daggers", "Continual Flame", "Darkness", "Darkvision", "Detect Thoughts", "Enlarge/Reduce", "Flaming Sphere", "Gentle Repose", "Gust of Wind", "Hold Person", "Invisibility", "Knock", "Levitate", "Locate Object", "Magic Mouth", "Magic Weapon", "Melf's Acid Arrow", "Mirror Image", "Misty Step", "Nystul's Magic Aura", "Phantasmal Force", "Ray of Enfeeblement", "Rope Trick", "Scorching Ray", "See Invisibility", "Shatter", "Spider Climb", "Suggestion", "Web"],
-    3: ["Animate Dead", "Bestow Curse", "Blink", "Clairvoyance", "Counterspell", "Dispel Magic", "Fear", "Feign Death", "Fireball", "Fly", "Gaseous Form", "Glyph of Warding", "Haste", "Hypnotic Pattern", "Leomund's Tiny Hut", "Lightning Bolt", "Magic Circle", "Major Image", "Nondetection", "Phantom Steed", "Protection from Energy", "Remove Curse", "Sending", "Sleet Storm", "Slow", "Stinking Cloud", "Tongues", "Vampiric Touch", "Water Breathing"],
-    4: ["Arcane Eye", "Banishment", "Blight", "Confusion", "Conjure Minor Elementals", "Control Water", "Dimension Door", "Evard's Black Tentacles", "Fabricate", "Fire Shield", "Greater Invisibility", "Hallucinatory Terrain", "Ice Storm", "Leomund's Secret Chest", "Locate Creature", "Mordenkainen's Faithful Hound", "Mordenkainen's Private Sanctum", "Otiluke's Resilient Sphere", "Phantasmal Killer", "Polymorph", "Stone Shape", "Stoneskin", "Wall of Fire"],
-    5: ["Animate Objects", "Bigby's Hand", "Cloudkill", "Cone of Cold", "Conjure Elemental", "Contact Other Plane", "Creation", "Dominate Person", "Dream", "Geas", "Hold Monster", "Legend Lore", "Mislead", "Modify Memory", "Passwall", "Planar Binding", "Rary's Telepathic Bond", "Scrying", "Seeming", "Telekinesis", "Teleportation Circle", "Wall of Force", "Wall of Stone"],
-    6: ["Chain Lightning", "Circle of Death", "Contingency", "Create Undead", "Disintegrate", "Drawmij's Instant Summons", "Eyebite", "Flesh to Stone", "Globe of Invulnerability", "Guards and Wards", "Magic Jar", "Mass Suggestion", "Move Earth", "Otiluke's Freezing Sphere", "Otto's Irresistible Dance", "Programmed Illusion", "Sunbeam", "True Seeing", "Wall of Ice"],
-    7: ["Delayed Blast Fireball", "Etherealness", "Finger of Death", "Forcecage", "Mirage Arcane", "Mordenkainen's Magnificent Mansion", "Mordenkainen's Sword", "Plane Shift", "Prismatic Spray", "Reverse Gravity", "Sequester", "Simulacrum", "Symbol", "Teleport"],
-    8: ["Antimagic Field", "Antipathy/Sympathy", "Clone", "Control Weather", "Demiplane", "Dominate Monster", "Feeblemind", "Incendiary Cloud", "Maze", "Mind Blank", "Power Word Stun", "Sunburst", "Telepathy"],
-    9: ["Astral Projection", "Foresight", "Gate", "Imprisonment", "Meteor Swarm", "Power Word Kill", "Prismatic Wall", "Shapechange", "Time Stop", "True Polymorph", "Weird", "Wish"]
-  },
-  artificer: {
-    0: ["Acid Splash", "Dancing Lights", "Fire Bolt", "Guidance", "Light", "Mage Hand", "Mending", "Message", "Poison Spray", "Prestidigitation", "Ray of Frost", "Resistance", "Shocking Grasp", "Spare the Dying"],
-    1: ["Alarm", "Cure Wounds", "Detect Magic", "Disguise Self", "Expeditious Retreat", "Faerie Fire", "False Life", "Feather Fall", "Grease", "Identify", "Jump", "Longstrider", "Purify Food and Drink", "Sanctuary", "Shield", "Snare", "Tasha's Hideous Laughter"],
-    2: ["Aid", "Alter Self", "Arcane Lock", "Blur", "Continual Flame", "Darkvision", "Enhance Ability", "Enlarge/Reduce", "Heat Metal", "Invisibility", "Lesser Restoration", "Levitate", "Magic Mouth", "Protection from Poison", "Pyrotechnics", "Rope Trick", "See Invisibility", "Spider Climb", "Web"],
-    3: ["Blink", "Create Food and Water", "Elemental Weapon", "Flame Arrows", "Fly", "Glyph of Warding", "Haste", "Intellect Fortress", "Protection from Energy", "Revivify", "Water Breathing", "Water Walk"],
-    4: ["Arcane Eye", "Fabricate", "Freedom of Movement", "Leomund's Secret Chest", "Mordenkainen's Faithful Hound", "Otiluke's Resilient Sphere", "Stone Shape", "Stoneskin"],
-    5: ["Animate Objects", "Bigby's Hand", "Creation", "Greater Restoration", "Skill Empowerment", "Wall of Stone"]
+    level: 2,
+    options: [
+      "School of Abjuration",
+      "School of Conjuration",
+      "School of Divination",
+      "School of Enchantment",
+      "School of Evocation",
+      "School of Illusion",
+      "School of Necromancy",
+      "School of Transmutation"
+    ]
   }
 };
 
@@ -639,10 +797,10 @@ document.getElementById('class').addEventListener('change', () => {
   const characterClass = document.getElementById('class').value;
   const spellcastingClass = document.getElementById('spellcasting-class');
   
-  if (['bard', 'cleric', 'druid', 'paladin', 'ranger', 'sorcerer', 'warlock', 'wizard', 'artificer'].includes(characterClass)) {
+  if (['bard', 'cleric', 'druid', 'paladin', 'ranger', 'sorcerer', 'warlock', 'wizard'].includes(characterClass)) {
     spellcastingClass.value = characterClass;
     
-    // Set default spellcasting ability based on class
+    // Set default spellcasting ability based on class (updated for 5.5e)
     const abilityMapping = {
       'bard': 'charisma',
       'cleric': 'wisdom',
@@ -651,8 +809,7 @@ document.getElementById('class').addEventListener('change', () => {
       'ranger': 'wisdom',
       'sorcerer': 'charisma',
       'warlock': 'charisma',
-      'wizard': 'intelligence',
-      'artificer': 'intelligence'
+      'wizard': 'intelligence'
     };
     
     document.getElementById('spellcasting-ability').value = abilityMapping[characterClass];
@@ -962,3 +1119,713 @@ if (bioFeatures.value) {
 } else if (combatFeatures.value) {
   bioFeatures.value = combatFeatures.value;
 }
+
+// Update subclass options when class changes
+document.getElementById('class').addEventListener('change', () => {
+  const characterClass = document.getElementById('class').value;
+  const subclassSelect = document.getElementById('subclass');
+  const level = parseInt(document.getElementById('level').value);
+  
+  // Clear existing options
+  subclassSelect.innerHTML = '<option value="">Select Subclass</option>';
+  
+  if (characterClass && subclasses[characterClass]) {
+    const subclassInfo = subclasses[characterClass];
+    
+    // Add new options
+    subclassInfo.options.forEach(subclass => {
+      const option = document.createElement('option');
+      option.value = subclass.toLowerCase().replace(/\s+/g, '-');
+      option.textContent = subclass;
+      subclassSelect.appendChild(option);
+    });
+    
+    // Show/hide based on level
+    subclassSelect.disabled = level < subclassInfo.level;
+    if (level < subclassInfo.level) {
+      subclassSelect.title = `Available at level ${subclassInfo.level}`;
+    } else {
+      subclassSelect.title = '';
+    }
+  }
+  
+  // Update spellcasting options
+  if (['bard', 'cleric', 'druid', 'paladin', 'ranger', 'sorcerer', 'warlock', 'wizard', 'artificer'].includes(characterClass)) {
+    const spellcastingClass = document.getElementById('spellcasting-class');
+    spellcastingClass.value = characterClass;
+    
+    // Set default spellcasting ability based on class
+    const abilityMapping = {
+      'artificer': 'intelligence',
+      'bard': 'charisma',
+      'cleric': 'wisdom',
+      'druid': 'wisdom',
+      'paladin': 'charisma',
+      'ranger': 'wisdom',
+      'sorcerer': 'charisma',
+      'warlock': 'charisma',
+      'wizard': 'intelligence'
+    };
+    
+    document.getElementById('spellcasting-ability').value = abilityMapping[characterClass];
+    updateSpellcasting();
+  }
+});
+
+// Update subclass availability when level changes
+document.getElementById('level').addEventListener('change', () => {
+  const characterClass = document.getElementById('class').value;
+  const subclassSelect = document.getElementById('subclass');
+  const level = parseInt(document.getElementById('level').value);
+  
+  if (characterClass && subclasses[characterClass]) {
+    const subclassInfo = subclasses[characterClass];
+    subclassSelect.disabled = level < subclassInfo.level;
+    if (level < subclassInfo.level) {
+      subclassSelect.title = `Available at level ${subclassInfo.level}`;
+    } else {
+      subclassSelect.title = '';
+    }
+  }
+  
+  updateSkills();
+  updateSavingThrows();
+  updateSpellcasting();
+  updateHitDice();
+});
+
+// Race Features (2024 PHB)
+const raceFeatures = {
+  ardling: [
+    "Celestial Legacy",
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Flight: You have a flying speed equal to your walking speed.",
+    "Healing Touch: As an action, you can touch a creature and restore hit points equal to your proficiency bonus. You can use this trait a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest."
+  ],
+  dragonborn: [
+    "Breath Weapon: You can use your action to exhale destructive energy.",
+    "Damage Resistance: You have resistance to the damage type associated with your draconic ancestry.",
+    "Draconic Ancestry: You have draconic ancestry, which determines your breath weapon and damage resistance."
+  ],
+  dwarf: [
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Dwarven Resilience: You have advantage on saving throws against poison, and you have resistance against poison damage.",
+    "Dwarven Toughness: Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.",
+    "Forge Wise: You gain tool proficiency with artisan's tools of your choice: smith's tools, brewer's supplies, or mason's tools.",
+    "Stonecunning: You have advantage on Intelligence (History) checks related to the origin of stonework."
+  ],
+  elf: [
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Fey Ancestry: You have advantage on saving throws against being charmed, and magic can't put you to sleep.",
+    "Keen Senses: You have proficiency in the Perception skill.",
+    "Trance: You don't need to sleep, and magic can't put you to sleep. You can finish a long rest in 4 hours."
+  ],
+  gnome: [
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Gnomish Cunning: You have advantage on Intelligence, Wisdom, and Charisma saving throws against magic.",
+    "Small: Your size is Small.",
+    "Gnomish Magic: You know the Minor Illusion cantrip."
+  ],
+  goliath: [
+    "Little Giants: You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.",
+    "Mountain Born: You have resistance to cold damage.",
+    "Powerful Build: You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.",
+    "Stone's Endurance: You can focus yourself to occasionally shrug off injury."
+  ],
+  halfling: [
+    "Brave: You have advantage on saving throws against being frightened.",
+    "Halfling Nimbleness: You can move through the space of any creature that is of a size larger than yours.",
+    "Lucky: When you roll a 1 on an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll.",
+    "Small: Your size is Small."
+  ],
+  human: [
+    "Resourceful: You gain proficiency in one skill of your choice.",
+    "Versatile: You gain one feat of your choice.",
+    "Ambitious: You gain inspiration whenever you finish a long rest."
+  ],
+  orc: [
+    "Adrenaline Rush: You can take the Dash action as a bonus action. You can use this trait a number of times equal to your proficiency bonus.",
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Powerful Build: You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.",
+    "Relentless Endurance: When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead."
+  ],
+  tiefling: [
+    "Darkvision: You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light.",
+    "Fiendish Legacy: You know the Thaumaturgy cantrip.",
+    "Fire Resistance: You have resistance to fire damage.",
+    "Legacy Magic: You can cast spells based on your Otherworldly Legacy."
+  ]
+};
+
+// Class Features (Level 1)
+const classFeatures = {
+  artificer: [
+    "Magical Tinkering: You can use your tools to create small magical objects.",
+    "Spellcasting: You can cast artificer spells using Intelligence as your spellcasting ability.",
+    "Tool Expertise: Your proficiency bonus is doubled for any ability check you make that uses your proficiency with a tool."
+  ],
+  barbarian: [
+    "Rage: In battle, you fight with primal ferocity. You can enter a rage as a bonus action.",
+    "Unarmored Defense: While you are not wearing any armor, your AC equals 10 + your Dexterity modifier + your Constitution modifier."
+  ],
+  bard: [
+    "Bardic Inspiration: You can inspire others through stirring words or music.",
+    "Spellcasting: You can cast bard spells using Charisma as your spellcasting ability."
+  ],
+  cleric: [
+    "Divine Domain: Choose a domain related to your deity.",
+    "Spellcasting: You can cast cleric spells using Wisdom as your spellcasting ability.",
+    "Channel Divinity: You can channel divine energy directly from your deity."
+  ],
+  druid: [
+    "Druidic: You know Druidic, the secret language of druids.",
+    "Spellcasting: You can cast druid spells using Wisdom as your spellcasting ability."
+  ],
+  fighter: [
+    "Fighting Style: You adopt a particular style of fighting as your specialty.",
+    "Second Wind: You have a limited well of stamina that you can draw on to protect yourself from harm."
+  ],
+  monk: [
+    "Unarmored Defense: While you are wearing no armor and not wielding a shield, your AC equals 10 + your Dexterity modifier + your Wisdom modifier.",
+    "Martial Arts: Your practice of martial arts gives you mastery of combat styles."
+  ],
+  paladin: [
+    "Divine Sense: Your blessed awareness lets you detect strong evil and powerful good.",
+    "Lay on Hands: Your blessed touch can heal wounds."
+  ],
+  ranger: [
+    "Favored Enemy: You have significant experience studying, tracking, hunting, and even talking to a certain type of enemy.",
+    "Natural Explorer: You are particularly familiar with one type of natural environment."
+  ],
+  rogue: [
+    "Expertise: Choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves' tools.",
+    "Sneak Attack: You know how to strike subtly and exploit a foe's distraction.",
+    "Thieves' Cant: You have learned thieves' cant, a secret mix of dialect, jargon, and code."
+  ],
+  sorcerer: [
+    "Sorcerous Origin: Choose a sorcerous origin, which describes the source of your innate magical power.",
+    "Spellcasting: You can cast sorcerer spells using Charisma as your spellcasting ability."
+  ],
+  warlock: [
+    "Otherworldly Patron: You have struck a bargain with an otherworldly being.",
+    "Pact Magic: You can cast warlock spells using Charisma as your spellcasting ability."
+  ],
+  wizard: [
+    "Arcane Recovery: You have learned to regain some of your magical energy by studying your spellbook.",
+    "Spellcasting: You can cast wizard spells using Intelligence as your spellcasting ability."
+  ]
+};
+
+// Subclass Features (Initial features when subclass is gained)
+const subclassFeatures = {
+  artificer: {
+    "alchemist": [
+      "Tool Proficiency: You gain proficiency with alchemist's supplies.",
+      "Experimental Elixir: You can magically create experimental elixirs in your alchemist's supplies.",
+      "Alchemical Savant: You develop masterful command of magical chemicals. Whenever you cast a spell using your alchemist's supplies as the spellcasting focus, you gain a bonus to one roll of the spell."
+    ],
+    "armorer": [
+      "Tools of the Trade: You gain proficiency with heavy armor and smith's tools.",
+      "Arcane Armor: Your metallurgical pursuits have led to you making armor a conduit for your magic.",
+      "Armor Model: You can customize your arcane armor. Choose either Guardian or Infiltrator."
+    ],
+    "artillerist": [
+      "Tool Proficiency: You gain proficiency with woodcarver's tools.",
+      "Eldritch Cannon: You learn how to create a magical cannon.",
+      "Arcane Firearm: You can use your tools to craft a magical firearm."
+    ],
+    "battle-smith": [
+      "Tool Proficiency: You gain proficiency with smith's tools.",
+      "Battle Ready: Your combat training and your experiments with magic have paid off.",
+      "Steel Defender: Your tinkering has borne you a faithful companion."
+    ]
+  },
+  barbarian: {
+    "path-of-the-berserker": [
+      "Frenzy: You can go into a frenzy when you rage.",
+      "Mindless Rage: You can't be charmed or frightened while raging."
+    ],
+    "path-of-the-storm-herald": [
+      "Storm Aura: While raging, you emanate an aura of stormy energy.",
+      "Storm Soul: Your connection to the storm grants you elemental protection."
+    ],
+    "path-of-the-wild-heart": [
+      "Bestial Heart: Your rage takes the form of a bestial transformation.",
+      "Primal Intuition: You gain proficiency in two skills from Animal Handling, Nature, Perception, or Survival."
+    ],
+    "path-of-the-zealot": [
+      "Divine Fury: You can channel divine fury into your weapon strikes.",
+      "Warrior of the Gods: Your soul is marked for endless battle."
+    ]
+  },
+  bard: {
+    "college-of-creation": [
+      "Mote of Potential: You can imbue a small object with magic using your Bardic Inspiration.",
+      "Performance of Creation: As an action, you can create a nonmagical item of your choice."
+    ],
+    "college-of-glamour": [
+      "Mantle of Inspiration: You gain the ability to weave a song of fey magic.",
+      "Enthralling Performance: You can charm humanoids through a magical performance."
+    ],
+    "college-of-lore": [
+      "Bonus Proficiencies: You gain three skill proficiencies of your choice.",
+      "Cutting Words: You learn how to use your wit to distract, confuse, and weaken your foes."
+    ],
+    "college-of-spirits": [
+      "Spiritual Focus: You can use a special focus for your spells.",
+      "Tales from Beyond: You can reach out to spirits who tell their tales through you."
+    ],
+    "college-of-swords": [
+      "Bonus Proficiencies: You gain proficiency with medium armor and scimitars.",
+      "Fighting Style: You adopt a particular style of fighting as your specialty.",
+      "Blade Flourish: You learn to perform impressive displays of martial prowess and speed."
+    ],
+    "college-of-valor": [
+      "Bonus Proficiencies: You gain proficiency with medium armor, shields, and martial weapons.",
+      "Combat Inspiration: You learn to inspire others in battle."
+    ]
+  },
+  cleric: {
+    "life-domain": [
+      "Bonus Proficiency: You gain proficiency with heavy armor.",
+      "Disciple of Life: Your healing spells are more effective.",
+      "Domain Spells: You gain domain spells related to life and healing."
+    ],
+    "light-domain": [
+      "Bonus Cantrip: You gain the Light cantrip.",
+      "Warding Flare: You can use your holy symbol to protect yourself from attacks.",
+      "Domain Spells: You gain domain spells related to light and fire."
+    ],
+    "nature-domain": [
+      "Acolyte of Nature: You learn one druid cantrip and gain proficiency in a skill.",
+      "Bonus Proficiency: You gain proficiency with heavy armor.",
+      "Domain Spells: You gain domain spells related to nature."
+    ],
+    "protection-domain": [
+      "Shield of the Faithful: You can use your shield to protect nearby allies.",
+      "Bonus Proficiency: You gain proficiency with heavy armor.",
+      "Domain Spells: You gain domain spells related to protection."
+    ],
+    "trickery-domain": [
+      "Blessing of the Trickster: You can grant an ally advantage on stealth checks.",
+      "Domain Spells: You gain domain spells related to deception and illusion."
+    ],
+    "war-domain": [
+      "War Priest: You can make weapon attacks as a bonus action.",
+      "Bonus Proficiencies: You gain proficiency with martial weapons and heavy armor.",
+      "Domain Spells: You gain domain spells related to combat."
+    ]
+  },
+  druid: {
+    "circle-of-the-land": [
+      "Bonus Cantrip: You learn an additional druid cantrip.",
+      "Natural Recovery: You can recover some spell slots during a short rest.",
+      "Circle Spells: You gain additional spells based on your chosen land type."
+    ],
+    "circle-of-the-moon": [
+      "Combat Wild Shape: You can use Wild Shape as a bonus action.",
+      "Circle Forms: You can transform into more powerful beasts.",
+      "Primal Strike: Your attacks in beast form count as magical."
+    ],
+    "circle-of-the-shepherd": [
+      "Speech of the Woods: You can talk with beasts.",
+      "Spirit Totem: You can call forth nature spirits to aid you.",
+      "Spirit Bond: Your spirit totems grant additional benefits."
+    ],
+    "circle-of-the-stars": [
+      "Star Map: You gain a celestial map that aids your magic.",
+      "Starry Form: You can take on a starry form with special abilities.",
+      "Cosmic Omen: You gain insight from the stars."
+    ],
+    "circle-of-wildfire": [
+      "Summon Wildfire Spirit: You can summon a wildfire spirit.",
+      "Enhanced Bond: Your magic is enhanced when near your wildfire spirit.",
+      "Fiery Soul: You gain resistance to fire damage."
+    ]
+  },
+  fighter: {
+    "battle-master": [
+      "Combat Superiority: You learn special maneuvers that enhance your combat abilities.",
+      "Student of War: You gain proficiency with one type of artisan's tools.",
+      "Maneuvers: You learn three maneuvers of your choice."
+    ],
+    "champion": [
+      "Improved Critical: Your weapon attacks score a critical hit on a roll of 19 or 20.",
+      "Remarkable Athlete: You gain a bonus to certain physical checks and jumps."
+    ],
+    "eldritch-knight": [
+      "Spellcasting: You learn to cast wizard spells.",
+      "Weapon Bond: You can bond with up to two weapons.",
+      "War Magic: You learn to combine weapon attacks with spellcasting."
+    ],
+    "psi-knight": [
+      "Psionic Power: You gain psionic energy dice to fuel your abilities.",
+      "Protective Field: You can protect allies with your psionic energy.",
+      "Psionic Strike: You can enhance your weapon attacks with psionic energy."
+    ],
+    "rune-knight": [
+      "Bonus Proficiency: You gain proficiency with smith's tools.",
+      "Rune Carver: You learn to inscribe magical runes on your gear.",
+      "Giant's Might: You can magically become Large size."
+    ]
+  },
+  monk: {
+    "way-of-mercy": [
+      "Implements of Mercy: You gain proficiency in herbalism kit.",
+      "Hand of Healing: You can spend ki points to heal wounds.",
+      "Hand of Harm: You can spend ki points to cause extra harm."
+    ],
+    "way-of-shadow": [
+      "Shadow Arts: You gain magical abilities that emphasize stealth.",
+      "Shadow Step: You gain the ability to step from one shadow into another.",
+      "Cloak of Shadows: You can become invisible in dim light."
+    ],
+    "way-of-the-ascendant-dragon": [
+      "Draconic Disciple: You gain draconic abilities.",
+      "Breath of the Dragon: You can spend ki points to use a dragon's breath weapon.",
+      "Wings Unfurled: You can sprout spectral dragon wings."
+    ],
+    "way-of-the-open-hand": [
+      "Open Hand Technique: You gain additional effects when using Flurry of Blows.",
+      "Wholeness of Body: You gain the ability to heal yourself.",
+      "Tranquility: You can enter a special meditation that surrounds you with peace."
+    ]
+  },
+  paladin: {
+    "oath-of-devotion": [
+      "Oath Spells: You gain oath spells related to protection and purification.",
+      "Channel Divinity: Sacred Weapon and Turn the Unholy",
+      "Divine Health: You are immune to disease."
+    ],
+    "oath-of-glory": [
+      "Oath Spells: You gain oath spells related to enhancement and victory.",
+      "Channel Divinity: Peerless Athlete and Inspiring Smite",
+      "Aura of Alacrity: You and nearby allies gain increased movement speed."
+    ],
+    "oath-of-the-ancients": [
+      "Oath Spells: You gain oath spells related to nature and light.",
+      "Channel Divinity: Nature's Wrath and Turn the Faithless",
+      "Aura of Warding: You and nearby allies have resistance to spell damage."
+    ],
+    "oath-of-vengeance": [
+      "Oath Spells: You gain oath spells related to pursuit and punishment.",
+      "Channel Divinity: Abjure Enemy and Vow of Enmity",
+      "Relentless Avenger: You can move when making opportunity attacks."
+    ]
+  },
+  ranger: {
+    "beast-master": [
+      "Ranger's Companion: You gain an animal companion that fights alongside you.",
+      "Exceptional Training: Your companion can attack as a bonus action.",
+      "Primal Companion: Your companion gains special benefits."
+    ],
+    "fey-wanderer": [
+      "Fey Wanderer Magic: You learn additional spells.",
+      "Dreadful Strikes: Your strikes can deal extra psychic damage.",
+      "Otherworldly Glamour: You gain a bonus to Charisma checks."
+    ],
+    "gloom-stalker": [
+      "Dread Ambusher: You gain extra benefits in the first round of combat.",
+      "Umbral Sight: You gain darkvision and can hide from creatures that rely on darkvision.",
+      "Extra Attack: You can attack twice when you take the Attack action."
+    ],
+    "hunter": [
+      "Hunter's Prey: Choose one of three features that help you hunt your prey.",
+      "Defensive Tactics: You gain additional defensive abilities.",
+      "Extra Attack: You can attack twice when you take the Attack action."
+    ],
+    "swarmkeeper": [
+      "Gathered Swarm: You manifest a swarm of nature spirits.",
+      "Swarmkeeper Magic: You learn additional spells.",
+      "Writhing Tide: Your swarm can help you move in various ways."
+    ]
+  },
+  rogue: {
+    "arcane-trickster": [
+      "Spellcasting: You learn to cast wizard spells.",
+      "Mage Hand Legerdemain: You gain a special mage hand.",
+      "Magical Ambush: Your spells are harder to resist when you're hidden."
+    ],
+    "assassin": [
+      "Bonus Proficiencies: You gain proficiency with disguise kit and poisoner's kit.",
+      "Assassinate: You have advantage on attack rolls against surprised creatures.",
+      "Infiltration Expertise: You can create false identities."
+    ],
+    "phantom": [
+      "Whispers of the Dead: You gain knowledge from lingering spirits.",
+      "Wails from the Grave: Your sneak attack can damage additional creatures.",
+      "Ghost Walk: You gain the ability to move through creatures and objects."
+    ],
+    "swashbuckler": [
+      "Fancy Footwork: You can prevent enemies from making opportunity attacks.",
+      "Rakish Audacity: You gain initiative bonus and new ways to Sneak Attack.",
+      "Panache: You can charm or challenge others with your charisma."
+    ],
+    "thief": [
+      "Fast Hands: You can use bonus actions for certain tasks.",
+      "Second-Story Work: You gain climbing speed and jumping ability.",
+      "Supreme Sneak: You gain advantage on stealth checks."
+    ]
+  },
+  sorcerer: {
+    "aberrant-mind": [
+      "Psionic Spells: You learn additional spells related to telepathy and psychic abilities.",
+      "Telepathic Speech: You can communicate telepathically.",
+      "Psionic Sorcery: You can cast your psionic spells without components."
+    ],
+    "clockwork-soul": [
+      "Clockwork Magic: You learn additional spells related to order and mechanics.",
+      "Restore Balance: You can use your reaction to cancel advantage or disadvantage.",
+      "Bastion of Law: You can expend sorcery points to grant yourself or another creature temporary hit points."
+    ],
+    "divine-soul": [
+      "Divine Magic: You can choose spells from the cleric spell list.",
+      "Favored by the Gods: You gain a bonus to failed saves or attacks.",
+      "Empowered Healing: You can reroll healing spell dice."
+    ],
+    "draconic-bloodline": [
+      "Dragon Ancestor: You choose a dragon type that influences your powers.",
+      "Draconic Resilience: Your hit points increase and you gain natural armor.",
+      "Elemental Affinity: You gain bonus damage with spells matching your dragon type."
+    ],
+    "storm-sorcery": [
+      "Wind Speaker: You can speak Primordial.",
+      "Tempestuous Magic: You can fly short distances as a bonus action.",
+      "Heart of the Storm: You gain resistance to lightning and thunder damage."
+    ],
+    "wild-magic": [
+      "Wild Magic Surge: Your spells can trigger unpredictable magical effects.",
+      "Tides of Chaos: You can gain advantage on one roll.",
+      "Bend Luck: You can influence the rolls of others."
+    ]
+  },
+  warlock: {
+    "the-archfey": [
+      "Expanded Spell List: You gain additional spells related to charm and trickery.",
+      "Fey Presence: You can use your action to charm or frighten creatures.",
+      "Misty Escape: You can teleport when you take damage."
+    ],
+    "the-celestial": [
+      "Expanded Spell List: You gain additional healing and radiant spells.",
+      "Healing Light: You gain a pool of healing dice.",
+      "Radiant Soul: You gain resistance to radiant damage and bonus to radiant/fire spells."
+    ],
+    "the-fiend": [
+      "Expanded Spell List: You gain additional spells related to fire and deception.",
+      "Dark One's Blessing: You gain temporary hit points when you reduce a hostile creature to 0 hit points.",
+      "Dark One's Own Luck: You can add a d10 to an ability check or saving throw."
+    ],
+    "the-great-old-one": [
+      "Expanded Spell List: You gain additional spells that corrupt or control minds.",
+      "Awakened Mind: You can communicate telepathically.",
+      "Entropic Ward: You can impose disadvantage on an attack roll made against you."
+    ],
+    "the-undying": [
+      "Expanded Spell List: You gain additional spells related to life and death.",
+      "Among the Dead: You gain advantages when dealing with undead.",
+      "Defy Death: You can regain hit points when you succeed on a death saving throw."
+    ]
+  },
+  wizard: {
+    "school-of-abjuration": [
+      "Abjuration Savant: You halve the gold and time needed to copy abjuration spells.",
+      "Arcane Ward: You create a magical ward that absorbs damage.",
+      "Projected Ward: You can use your ward to protect others."
+    ],
+    "school-of-conjuration": [
+      "Conjuration Savant: You halve the gold and time needed to copy conjuration spells.",
+      "Minor Conjuration: You can conjure small, nonmagical objects.",
+      "Benign Transposition: You can teleport and switch places with creatures."
+    ],
+    "school-of-divination": [
+      "Divination Savant: You halve the gold and time needed to copy divination spells.",
+      "Portent: You can replace attack rolls, saving throws, or ability checks.",
+      "Expert Divination: You regain spell slots when casting divination spells."
+    ],
+    "school-of-enchantment": [
+      "Enchantment Savant: You halve the gold and time needed to copy enchantment spells.",
+      "Hypnotic Gaze: You can charm creatures with your gaze.",
+      "Instinctive Charm: You can redirect attacks made against you."
+    ],
+    "school-of-evocation": [
+      "Evocation Savant: You halve the gold and time needed to copy evocation spells.",
+      "Sculpt Spells: You can protect allies from your evocation spells.",
+      "Potent Cantrip: Your damaging cantrips always deal some damage."
+    ],
+    "school-of-illusion": [
+      "Illusion Savant: You halve the gold and time needed to copy illusion spells.",
+      "Improved Minor Illusion: You learn Minor Illusion and can make it more powerful.",
+      "Malleable Illusions: You can change your illusions using an action."
+    ],
+    "school-of-necromancy": [
+      "Necromancy Savant: You halve the gold and time needed to copy necromancy spells.",
+      "Grim Harvest: You regain hit points when you kill creatures with spells.",
+      "Undead Thralls: Your necromancy spells create more powerful undead."
+    ],
+    "school-of-transmutation": [
+      "Transmutation Savant: You halve the gold and time needed to copy transmutation spells.",
+      "Minor Alchemy: You can temporarily transform materials.",
+      "Transmuter's Stone: You can create a stone that grants magical benefits."
+    ]
+  }
+};
+
+// Update Features & Traits when race, class, or subclass changes
+function updateFeatures() {
+  const race = document.getElementById('race').value;
+  const characterClass = document.getElementById('class').value;
+  const subclass = document.getElementById('subclass').value;
+  const level = parseInt(document.getElementById('level').value);
+  
+  let features = [];
+  
+  // Add race features
+  if (race && raceFeatures[race]) {
+    features.push("=== Racial Features ===");
+    features = features.concat(raceFeatures[race]);
+    features.push("");
+  }
+  
+  // Add class features
+  if (characterClass && classFeatures[characterClass]) {
+    features.push("=== Class Features ===");
+    features = features.concat(classFeatures[characterClass]);
+    features.push("");
+  }
+  
+  // Add subclass features if level requirement is met
+  if (subclass && characterClass && subclasses[characterClass]) {
+    const subclassInfo = subclasses[characterClass];
+    if (level >= subclassInfo.level) {
+      features.push(`=== ${subclass.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Features ===`);
+      if (subclassFeatures[characterClass] && subclassFeatures[characterClass][subclass]) {
+        features = features.concat(subclassFeatures[characterClass][subclass]);
+      }
+      features.push("");
+    }
+  }
+  
+  // Update both Features & Traits fields
+  const featuresText = features.join("\n");
+  document.getElementById('features').value = featuresText;
+  document.getElementById('combat-features').value = featuresText;
+}
+
+// Add event listeners for feature updates
+document.getElementById('race').addEventListener('change', updateFeatures);
+document.getElementById('class').addEventListener('change', updateFeatures);
+document.getElementById('subclass').addEventListener('change', updateFeatures);
+document.getElementById('level').addEventListener('change', updateFeatures);
+
+// Class Resources definitions
+const classResources = {
+  artificer: [
+    { name: "Infusions Known", max: "level >= 2 ? Math.floor((level + 2) / 2) : 0", current: true, description: "Number of infusions you can know at once" },
+    { name: "Infused Items", max: "level >= 2 ? Math.min(Math.floor((level + 2) / 4) * 2, 6) : 0", current: true, description: "Number of items you can infuse at once" }
+  ],
+  barbarian: [
+    { name: "Rage Uses", max: "level <= 3 ? 2 : level <= 5 ? 3 : level <= 11 ? 4 : level <= 16 ? 5 : 6", current: true, description: "Number of times you can rage between long rests" },
+    { name: "Rage Damage", max: "level <= 8 ? 2 : level <= 15 ? 3 : 4", current: false, description: "Extra damage dealt while raging" }
+  ],
+  bard: [
+    { name: "Bardic Inspiration", max: "Math.max(1, getAbilityModifier('charisma'))", current: true, description: "d6 dice that you can give to other creatures" },
+    { name: "Inspiration Die", max: "level <= 4 ? 6 : level <= 9 ? 8 : level <= 14 ? 10 : 12", current: false, description: "The die used for Bardic Inspiration (d6, d8, etc)" }
+  ],
+  cleric: [
+    { name: "Channel Divinity", max: "level <= 5 ? 1 : level <= 17 ? 2 : 3", current: true, description: "Uses between short/long rests" },
+    { name: "Divine Intervention", max: "level >= 10 ? 1 : 0", current: true, description: "Available once per week at 10th level" }
+  ],
+  druid: [
+    { name: "Wild Shape", max: "2", current: true, description: "Uses between short/long rests" },
+    { name: "Wild Shape CR", max: "level <= 4 ? 0.25 : level <= 7 ? 0.5 : level <= 9 ? 1 : 1", current: false, description: "Max CR of beast forms" }
+  ],
+  fighter: [
+    { name: "Action Surge", max: "level >= 2 ? (level >= 17 ? 2 : 1) : 0", current: true, description: "Uses between short/long rests" },
+    { name: "Second Wind", max: "1", current: true, description: "Uses between short/long rests" },
+    { name: "Indomitable", max: "level >= 9 ? (level >= 13 ? (level >= 17 ? 3 : 2) : 1) : 0", current: true, description: "Uses between long rests" }
+  ],
+  monk: [
+    { name: "Ki Points", max: "level >= 2 ? level : 0", current: true, description: "Points used for various monk abilities" },
+    { name: "Martial Arts Die", max: "level <= 4 ? 4 : level <= 10 ? 6 : level <= 16 ? 8 : 10", current: false, description: "Die used for unarmed strikes and monk weapons" }
+  ],
+  paladin: [
+    { name: "Divine Sense", max: "1 + getAbilityModifier('charisma')", current: true, description: "Uses between long rests" },
+    { name: "Lay on Hands", max: "level * 5", current: true, description: "Pool of healing points" },
+    { name: "Channel Divinity", max: "level >= 3 ? 1 : 0", current: true, description: "Uses between short/long rests" }
+  ],
+  ranger: [
+    { name: "Focus Points", max: "level >= 2 ? Math.ceil(level / 2) : 0", current: true, description: "Points used for ranger abilities" }
+  ],
+  rogue: [
+    { name: "Sneak Attack", max: "Math.ceil(level / 2)", current: false, description: "Number of d6s for Sneak Attack damage" }
+  ],
+  sorcerer: [
+    { name: "Sorcery Points", max: "level >= 2 ? level : 0", current: true, description: "Points used for various sorcerer abilities" },
+    { name: "Metamagic Options", max: "level >= 3 ? (level >= 10 ? (level >= 17 ? 4 : 3) : 2) : 0", current: false, description: "Number of metamagic options known" }
+  ],
+  warlock: [
+    { name: "Pact Magic Slots", max: "level >= 1 ? (level >= 11 ? 3 : 2) : 0", current: true, description: "Spell slots (all slots are of your highest level)" },
+    { name: "Slot Level", max: "level <= 2 ? 1 : level <= 4 ? 2 : level <= 6 ? 3 : level <= 8 ? 4 : 5", current: false, description: "Level of your Pact Magic spell slots" },
+    { name: "Invocations Known", max: "level >= 2 ? 2 + Math.floor((level - 2) / 3) : 0", current: false, description: "Number of eldritch invocations known" }
+  ],
+  wizard: [
+    { name: "Arcane Recovery", max: "Math.ceil(level / 2)", current: false, description: "Levels of spell slots you can recover" }
+  ]
+};
+
+// Function to get ability modifier
+function getAbilityModifier(ability) {
+  const score = parseInt(document.getElementById(ability).value);
+  return Math.floor((score - 10) / 2);
+}
+
+// Function to evaluate resource max value
+function evaluateResourceMax(formula, level) {
+  // Replace getAbilityModifier calls with actual values
+  const evaluatedFormula = formula.replace(/getAbilityModifier\('(\w+)'\)/g, (match, ability) => {
+    return getAbilityModifier(ability);
+  });
+  
+  // Create a function to safely evaluate the formula
+  return new Function('level', `return ${evaluatedFormula}`)(level);
+}
+
+// Update class resources when class or level changes
+function updateClassResources() {
+  const characterClass = document.getElementById('class').value;
+  const level = parseInt(document.getElementById('level').value);
+  const container = document.getElementById('class-resources-container');
+  
+  // Clear existing resources
+  container.innerHTML = '';
+  
+  if (characterClass && classResources[characterClass]) {
+    classResources[characterClass].forEach(resource => {
+      const resourceDiv = document.createElement('div');
+      resourceDiv.className = 'resource-item';
+      
+      const maxValue = evaluateResourceMax(resource.max, level);
+      
+      resourceDiv.innerHTML = `
+        <label for="${resource.name.toLowerCase().replace(/\s+/g, '-')}">${resource.name}</label>
+        ${resource.current ? 
+          `<input type="number" 
+                  id="${resource.name.toLowerCase().replace(/\s+/g, '-')}" 
+                  min="0" 
+                  max="${maxValue}" 
+                  value="${maxValue}">` :
+          `<span>${maxValue}</span>`}
+        <div class="resource-description">${resource.description}</div>
+      `;
+      
+      container.appendChild(resourceDiv);
+    });
+  }
+}
+
+// Add event listeners for class resources
+document.getElementById('class').addEventListener('change', updateClassResources);
+document.getElementById('level').addEventListener('change', updateClassResources);
+abilityInputs.forEach(input => {
+  input.addEventListener('change', updateClassResources);
+});
