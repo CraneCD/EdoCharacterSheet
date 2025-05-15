@@ -676,11 +676,16 @@ document.getElementById('add-equipment').addEventListener('click', () => {
   newItem.className = 'equipment-item';
   newItem.style = 'display: flex; margin-bottom: 5px;';
   
-  newItem.innerHTML = `
-    <input type="text" placeholder="Item name" style="flex: 3;">
-    <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
-    <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
-  `;
+newItem.innerHTML = `
+  <input type="text" placeholder="Item name" style="flex: 3;" value="${item.name || ''}">
+  <input type="number" placeholder="Qty" min="1" style="flex: 1; margin-left: 5px;" value="${item.quantity || 1}">
+  <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;" value="${item.weight || ''}">
+  <button type="button" class="remove-equipment" style="margin-left: 5px;">×</button>
+`;
+
+  newItem.querySelector('.remove-equipment').addEventListener('click', () => {
+  newItem.remove();
+});
   
   equipmentItems.appendChild(newItem);
 });
