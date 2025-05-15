@@ -35,6 +35,7 @@
             <label for="class">Class</label>
             <select id="class" name="class">
               <option value="">Select Class</option>
+              <option value="artificer">Artificer</option>
               <option value="barbarian">Barbarian</option>
               <option value="bard">Bard</option>
               <option value="cleric">Cleric</option>
@@ -47,7 +48,13 @@
               <option value="sorcerer">Sorcerer</option>
               <option value="warlock">Warlock</option>
               <option value="wizard">Wizard</option>
-              <option value="artificer">Artificer</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="subclass">Subclass</label>
+            <select id="subclass" name="subclass">
+              <option value="">Select Subclass</option>
             </select>
           </div>
           
@@ -60,14 +67,15 @@
             <label for="race">Race</label>
             <select id="race" name="race">
               <option value="">Select Race</option>
+              <option value="ardling">Ardling</option>
               <option value="dragonborn">Dragonborn</option>
               <option value="dwarf">Dwarf</option>
               <option value="elf">Elf</option>
               <option value="gnome">Gnome</option>
-              <option value="half-elf">Half-Elf</option>
-              <option value="half-orc">Half-Orc</option>
+              <option value="goliath">Goliath</option>
               <option value="halfling">Halfling</option>
               <option value="human">Human</option>
+              <option value="orc">Orc</option>
               <option value="tiefling">Tiefling</option>
             </select>
           </div>
@@ -77,18 +85,22 @@
             <select id="background" name="background">
               <option value="">Select Background</option>
               <option value="acolyte">Acolyte</option>
+              <option value="artisan">Artisan</option>
               <option value="charlatan">Charlatan</option>
               <option value="criminal">Criminal</option>
+              <option value="cultist">Cultist</option>
               <option value="entertainer">Entertainer</option>
-              <option value="folk-hero">Folk Hero</option>
-              <option value="guild-artisan">Guild Artisan</option>
+              <option value="farmer">Farmer</option>
+              <option value="gladiator">Gladiator</option>
+              <option value="guard">Guard</option>
+              <option value="guide">Guide</option>
               <option value="hermit">Hermit</option>
+              <option value="laborer">Laborer</option>
               <option value="noble">Noble</option>
-              <option value="outlander">Outlander</option>
+              <option value="pilgrim">Pilgrim</option>
               <option value="sage">Sage</option>
               <option value="sailor">Sailor</option>
               <option value="soldier">Soldier</option>
-              <option value="urchin">Urchin</option>
             </select>
           </div>
           
@@ -337,7 +349,15 @@
           
           <div class="combat-stat">
             <label for="hit-dice">Hit Dice</label>
-            <input type="text" id="hit-dice" name="hit-dice" value="1d8">
+            <input type="text" id="hit-dice" name="hit-dice" readonly>
+          </div>
+          
+          <!-- Class Resources Section -->
+          <div class="form-group" id="class-resources">
+            <h3>Class Resources</h3>
+            <div id="class-resources-container">
+              <!-- Resources will be dynamically added here based on class -->
+            </div>
           </div>
           
           <div class="combat-stat">
