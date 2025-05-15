@@ -554,10 +554,18 @@ document.addEventListener('DOMContentLoaded', () => {
     cantripList.appendChild(newCantrip);
   });
 
-  document.getElementById('add-level-1').addEventListener('click', () => {
-    const newSpell = createSpellItem(1);
-    level1List.appendChild(newSpell);
-  });
+  for (let i = 1; i <= 9; i++) {
+    const listId = `level-${i}-list`;
+    const buttonId = `add-level-${i}`;
+    const container = document.getElementById(listId);
+    const button = document.getElementById(buttonId);
+    if (container && button) {
+      button.addEventListener('click', () => {
+        const newSpell = createSpellItem(i);
+        container.appendChild(newSpell);
+      });
+    }
+  }
 });
 
 // Update spellcasting class options based on character class
