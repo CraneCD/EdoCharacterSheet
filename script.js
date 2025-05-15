@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add more equipment items
 document.getElementById('add-equipment').addEventListener('click', () => {
-  const equipmentItems = document.getElementById('equipment-items');
+  const equipmentItems = document.getElementById('equipment-item');
   const newItem = document.createElement('div');
   newItem.className = 'equipment-item';
   newItem.style = 'display: flex; margin-bottom: 5px;';
@@ -693,7 +693,7 @@ document.getElementById('add-equipment').addEventListener('click', () => {
 
 // Add event listeners to existing remove buttons when loading a character
 // Add this inside the load character functionality where equipment items are created:
-const equipmentContainer = document.getElementById('equipment-items');
+const equipmentContainer = document.getElementById('equipment-item');
 equipmentContainer.innerHTML = '';
 (data.equipment || []).forEach(item => {
   const newItem = document.createElement('div');
@@ -816,7 +816,7 @@ document.getElementById('load-character').addEventListener('click', () => {
         });
 
         // Equipment
-        const equipmentContainer = document.getElementById('equipment-items');
+        const equipmentContainer = document.getElementById('equipment-item');
         equipmentContainer.innerHTML = '';
         (data.equipment || []).forEach(item => {
           const newItem = document.createElement('div');
@@ -877,7 +877,7 @@ document.getElementById('clear-form').addEventListener('click', () => {
     });
     
     // Reset equipment
-    const equipmentContainer = document.getElementById('equipment-items');
+    const equipmentContainer = document.getElementById('equipment-item');
     equipmentContainer.innerHTML = `
       <div class="equipment-item" style="display: flex; margin-bottom: 5px;">
         <input type="text" placeholder="Item name" style="flex: 3;">
