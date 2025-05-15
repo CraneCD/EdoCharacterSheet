@@ -672,9 +672,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const row = document.createElement('tr');
 
     row.innerHTML = `
-      <td><input type="text" name="attack-name"></td>
-      <td><input type="text" name="attack-bonus"></td>
-      <td><input type="text" name="attack-damage"></td>
+      <td data-label="Name"><input type="text" name="attack-name"></td>
+      <td data-label="Attack Bonus"><input type="text" name="attack-bonus"></td>
+      <td data-label="Damage/Type"><input type="text" name="attack-damage"></td>
       <td><button type="button" class="remove-attack-row">×</button></td>
     `;
 
@@ -811,9 +811,9 @@ function loadAttacksData(attacks = []) {
   attacks.forEach(atk => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td><input type="text" name="attack-name" value="${atk.name || ''}"></td>
-      <td><input type="text" name="attack-bonus" value="${atk.bonus || ''}"></td>
-      <td><input type="text" name="attack-damage" value="${atk.damage || ''}"></td>
+      <td data-label="Name"><input type="text" name="attack-name" value="${atk.name || ''}"></td>
+      <td data-label="Attack Bonus"><input type="text" name="attack-bonus" value="${atk.bonus || ''}"></td>
+      <td data-label="Damage/Type"><input type="text" name="attack-damage" value="${atk.damage || ''}"></td>
       <td><button type="button" class="remove-attack-row">×</button></td>
     `;
     row.querySelector('.remove-attack-row').addEventListener('click', () => row.remove());
