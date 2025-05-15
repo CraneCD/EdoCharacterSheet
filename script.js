@@ -36,6 +36,9 @@ function updateModifier(abilityId) {
   // Update related skills
   updateSkills();
   
+  // Update saving throws
+  updateSavingThrows();
+  
   // Update initiative if dexterity changes
   if (abilityId === 'dexterity') {
     document.getElementById('initiative').value = `${modSign}${modifier}`;
@@ -104,6 +107,7 @@ document.querySelectorAll('.skill-item input[type="checkbox"]').forEach(checkbox
 // Update level dependent calculations
 document.getElementById('level').addEventListener('change', () => {
   updateSkills();
+  updateSavingThrows();
   updateSpellcasting();
   updateHitDice();
 });
@@ -159,6 +163,32 @@ function updateSpellcasting() {
 
 // Update spell calculations when spellcasting ability changes
 document.getElementById('spellcasting-ability').addEventListener('change', updateSpellcasting);
+
+// Update Saving Throws based on ability modifiers and proficiency
+function updateSavingThrows() {
+  const proficiencyBonus = 2 + Math.ceil(parseInt(document.getElementById('level').value) / 4) - 1;
+  
+  const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+  
+  abilities.forEach(ability => {
+    const abilityScore = parseInt(document.getElementById(ability).value);
+    const abilityMod = calculateModifier(abilityScore);
+    let saveMod = abilityMod;
+    
+    // Add proficiency bonus if proficient
+    if (document.getElementById(`${ability}-save`).checked) {
+      saveMod += proficiencyBonus;
+    }
+    
+    const modSign = saveMod >= 0 ? '+' : '';
+    document.getElementById(`${ability}-save-mod`).textContent = `${modSign}${saveMod}`;
+  });
+}
+
+// Add event listeners to saving throw checkboxes
+document.querySelectorAll('.save-item input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', updateSavingThrows);
+});
 
 // Spell database (2024 PHB spells)
 const spellDatabase = {
@@ -680,9 +710,24 @@ document.getElementById('add-equipment').addEventListener('click', () => {
     <input type="text" placeholder="Item name" style="flex: 3;">
     <input type="number" placeholder="Qty" min="1" value="1" style="flex: 1; margin-left: 5px;">
     <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;">
+    <button type="button" class="remove-equipment" style="margin-left: 5px;">×</button>
   `;
   
+  // Add event listener to the remove button
+  newItem.querySelector('.remove-equipment').addEventListener('click', function() {
+    this.closest('.equipment-item').remove();
+  });
+  
   equipmentItems.appendChild(newItem);
+});
+
+// Add event listeners to existing remove equipment buttons
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.remove-equipment').forEach(button => {
+    button.addEventListener('click', function() {
+      this.closest('.equipment-item').remove();
+    });
+  });
 });
 
 // Helper: Collect attacks data
@@ -896,3 +941,24 @@ document.getElementById('export-pdf').addEventListener('click', () => {
 updateHitDice();
 updateSkills();
 updateSpellcasting();
+
+// Synchronize Features & Traits between Combat and Biography tabs
+const combatFeatures = document.getElementById('combat-features');
+const bioFeatures = document.getElementById('features');
+
+// Update Combat tab when Bio tab changes
+bioFeatures.addEventListener('input', () => {
+  combatFeatures.value = bioFeatures.value;
+});
+
+// Update Bio tab when Combat tab changes
+combatFeatures.addEventListener('input', () => {
+  bioFeatures.value = combatFeatures.value;
+});
+
+// Load initial value if exists
+if (bioFeatures.value) {
+  combatFeatures.value = bioFeatures.value;
+} else if (combatFeatures.value) {
+  bioFeatures.value = combatFeatures.value;
+}
