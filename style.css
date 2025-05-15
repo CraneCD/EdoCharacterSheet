@@ -125,6 +125,34 @@ input, select, textarea {
   margin-top: 5px;
 }
 
+.saving-throws {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.save-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+.save-item input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+.save-mod {
+  margin-left: auto;
+  font-weight: bold;
+  background-color: var(--secondary);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
 .skills {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
