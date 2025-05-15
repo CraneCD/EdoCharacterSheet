@@ -685,91 +685,160 @@ document.getElementById('add-equipment').addEventListener('click', () => {
   equipmentItems.appendChild(newItem);
 });
 
-// Save character data
+// Helper: Collect attacks data
+function getAttacksData() {
+  return Array.from(document.querySelectorAll('#attacks-table tbody tr')).map(row => ({
+    name: row.querySelector('input[name="attack-name"]').value,
+    bonus: row.querySelector('input[name="attack-bonus"]').value,
+    damage: row.querySelector('input[name="attack-damage"]').value
+  }));
+}
+
+// Helper: Load attacks from data
+function loadAttacksData(attacks = []) {
+  const tbody = document.querySelector('#attacks-table tbody');
+  tbody.innerHTML = '';
+  attacks.forEach(atk => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="text" name="attack-name" value="${atk.name || ''}"></td>
+      <td><input type="text" name="attack-bonus" value="${atk.bonus || ''}"></td>
+      <td><input type="text" name="attack-damage" value="${atk.damage || ''}"></td>
+      <td><button type="button" class="remove-attack-row">×</button></td>
+    `;
+    row.querySelector('.remove-attack-row').addEventListener('click', () => row.remove());
+    tbody.appendChild(row);
+  });
+}
+
+// Save to file
 document.getElementById('save-character').addEventListener('click', () => {
   const formData = new FormData(document.getElementById('character-form'));
   const characterData = {};
-  
+
   formData.forEach((value, key) => {
     characterData[key] = value;
   });
-  
-  // Handle equipment items
-  const equipmentItems = [];
-  document.querySelectorAll('.equipment-item').forEach(item => {
+
+  // Equipment
+  characterData.equipment = Array.from(document.querySelectorAll('.equipment-item')).map(item => {
     const inputs = item.querySelectorAll('input');
-    equipmentItems.push({
+    return {
       name: inputs[0].value,
       quantity: inputs[1].value,
       weight: inputs[2].value
-    });
+    };
   });
-  characterData.equipment = equipmentItems;
-  
-  // Handle spells for all levels
+
+  // Spells
   for (let i = 0; i <= 9; i++) {
-    const spellKey = i === 0 ? 'cantrips' : `level${i}Spells`;
+    const key = i === 0 ? 'cantrips' : `level${i}Spells`;
     const listId = i === 0 ? 'cantrips-list' : `level-${i}-list`;
-    
-    const spells = [];
-    document.querySelectorAll(`#${listId} .spell-item`).forEach(spell => {
+    characterData[key] = Array.from(document.querySelectorAll(`#${listId} .spell-item`)).map(spell => {
       const inputs = spell.querySelectorAll('input');
-      spells.push({
+      return {
         name: inputs[0].value,
         castingTime: inputs[1].value,
         range: inputs[2].value
-      });
+      };
     });
-    characterData[spellKey] = spells;
   }
 
-  // --- Save Attacks & Spellcasting rows ---
-  const attackRows = [];
-  document.querySelectorAll('#attacks-table tbody tr').forEach(row => {
-    attackRows.push({
-      name: row.querySelector('input[name="attack-name"]').value,
-      bonus: row.querySelector('input[name="attack-bonus"]').value,
-      damage: row.querySelector('input[name="attack-damage"]').value
-    });
-  });
-  characterData.attacks = attackRows;
-  
-  // Save to local storage
-  const characterName = document.getElementById('character-name').value || 'unnamed-character';
-  localStorage.setItem(`dnd-character-${characterName}`, JSON.stringify(characterData));
-  
-  alert(`Character "${characterName}" saved successfully!`);
+  // Attacks
+  characterData.attacks = getAttacksData();
+
+  // Export to file
+  const blob = new Blob([JSON.stringify(characterData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const filename = (characterData['character-name'] || 'character') + '.json';
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
 
-// Load character data
+// Load from file
 document.getElementById('load-character').addEventListener('click', () => {
-  const characterName = prompt('Enter the name of the character to load:');
-  if (!characterName) return;
-  
-  const characterData = localStorage.getItem(`dnd-character-${characterName}`);
-  if (!characterData) {
-    alert(`No character found with the name "${characterName}"`);
-    return;
-  }
-  
-  const data = JSON.parse(characterData);
-  
-  // Clear form
-  document.getElementById('clear-form').click();
-  
-  // Populate form fields
-  Object.entries(data).forEach(([key, value]) => {
-    if (!['equipment', 'attacks', ...Array.from({length: 10}, (_, i) => i === 0 ? 'cantrips' : `level${i}Spells`)].includes(key)) {
-      const field = document.getElementById(key);
-      if (field) {
-        if (field.type === 'checkbox') {
-          field.checked = value === 'on';
-        } else {
-          field.value = value;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+
+        // Reset form
+        document.getElementById('clear-form').click();
+
+        // Populate base fields
+        Object.entries(data).forEach(([key, value]) => {
+          if (!['equipment', 'attacks', ...Array.from({ length: 10 }, (_, i) => i === 0 ? 'cantrips' : `level${i}Spells`)].includes(key)) {
+            const field = document.getElementById(key);
+            if (field) {
+              if (field.type === 'checkbox') {
+                field.checked = value === 'on';
+              } else {
+                field.value = value;
+              }
+            }
+          }
+        });
+
+        // Equipment
+        const equipmentContainer = document.getElementById('equipment-items');
+        equipmentContainer.innerHTML = '';
+        (data.equipment || []).forEach(item => {
+          const newItem = document.createElement('div');
+          newItem.className = 'equipment-item';
+          newItem.style = 'display: flex; margin-bottom: 5px;';
+          newItem.innerHTML = `
+            <input type="text" placeholder="Item name" style="flex: 3;" value="${item.name || ''}">
+            <input type="number" placeholder="Qty" min="1" style="flex: 1; margin-left: 5px;" value="${item.quantity || 1}">
+            <input type="text" placeholder="Weight" style="flex: 1; margin-left: 5px;" value="${item.weight || ''}">
+          `;
+          equipmentContainer.appendChild(newItem);
+        });
+
+        // Spells
+        for (let i = 0; i <= 9; i++) {
+          const spellKey = i === 0 ? 'cantrips' : `level${i}Spells`;
+          const listId = i === 0 ? 'cantrips-list' : `level-${i}-list`;
+          const buttonId = i === 0 ? 'add-cantrip' : `add-level-${i}`;
+          const container = document.getElementById(listId);
+          const addButton = document.getElementById(buttonId);
+          container.innerHTML = '';
+          container.appendChild(addButton);
+          (data[spellKey] || []).forEach(spell => {
+            const newSpell = createSpellItem(i);
+            const inputs = newSpell.querySelectorAll('input');
+            inputs[0].value = spell.name || '';
+            inputs[1].value = spell.castingTime || '';
+            inputs[2].value = spell.range || '';
+            container.insertBefore(newSpell, addButton);
+          });
         }
+
+        // Attacks
+        loadAttacksData(data.attacks);
+
+        // Recalculate modifiers
+        abilityInputs.forEach(input => updateModifier(input.id));
+
+        alert('Character loaded successfully!');
+      } catch (err) {
+        alert('Error loading character: ' + err.message);
       }
-    }
+    };
+    reader.readAsText(file);
   });
+  input.click();
+});
+
   
   // Update calculations
   abilityInputs.forEach(input => {
