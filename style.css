@@ -424,6 +424,74 @@ button:hover {
     padding: 8px 16px;
     font-size: 14px;
   }
+
+  /* New mobile styles for equipment, spells, and attacks */
+  .equipment-item {
+    flex-direction: column !important;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--secondary);
+    border-radius: var(--border-radius);
+    margin-bottom: 10px !important;
+  }
+
+  .equipment-item input {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .spell-item {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .spell-item input {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .spell-name-container {
+    width: 100%;
+  }
+
+  #attacks-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  #attacks-table tr {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid var(--secondary);
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+  }
+
+  #attacks-table td {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  #attacks-table td:last-child {
+    margin-bottom: 0;
+  }
+
+  #attacks-table thead {
+    display: none;
+  }
+
+  #attacks-table td input {
+    width: 100%;
+  }
+
+  #attacks-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+  }
 }
 
 @media (max-width: 480px) {
