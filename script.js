@@ -722,6 +722,17 @@ document.getElementById('save-character').addEventListener('click', () => {
     });
     characterData[spellKey] = spells;
   }
+
+  // --- Save Attacks & Spellcasting rows ---
+  const attackRows = [];
+  document.querySelectorAll('#attacks-table tbody tr').forEach(row => {
+    attackRows.push({
+      name: row.querySelector('input[name="attack-name"]').value,
+      bonus: row.querySelector('input[name="attack-bonus"]').value,
+      damage: row.querySelector('input[name="attack-damage"]').value
+    });
+  });
+  characterData.attacks = attackRows;
   
   // Save to local storage
   const characterName = document.getElementById('character-name').value || 'unnamed-character';
@@ -748,7 +759,7 @@ document.getElementById('load-character').addEventListener('click', () => {
   
   // Populate form fields
   Object.entries(data).forEach(([key, value]) => {
-    if (!['equipment', ...Array.from({length: 10}, (_, i) => i === 0 ? 'cantrips' : `level${i}Spells`)].includes(key)) {
+    if (!['equipment', 'attacks', ...Array.from({length: 10}, (_, i) => i === 0 ? 'cantrips' : `level${i}Spells`)].includes(key)) {
       const field = document.getElementById(key);
       if (field) {
         if (field.type === 'checkbox') {
@@ -793,7 +804,6 @@ document.getElementById('load-character').addEventListener('click', () => {
     
     if (data[spellKey] && data[spellKey].length > 0) {
       const spellsContainer = document.getElementById(listId);
-      // Clear existing spells but keep the Add button
       const addButton = document.getElementById(buttonId);
       spellsContainer.innerHTML = '';
       spellsContainer.appendChild(addButton);
@@ -809,9 +819,32 @@ document.getElementById('load-character').addEventListener('click', () => {
       });
     }
   }
+
+  // --- Load attacks ---
+  if (data.attacks && data.attacks.length > 0) {
+    const tbody = document.querySelector('#attacks-table tbody');
+    tbody.innerHTML = ''; // Clear existing rows
+
+    data.attacks.forEach(atk => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><input type="text" name="attack-name" value="${atk.name || ''}"></td>
+        <td><input type="text" name="attack-bonus" value="${atk.bonus || ''}"></td>
+        <td><input type="text" name="attack-damage" value="${atk.damage || ''}"></td>
+        <td><button type="button" class="remove-attack-row">×</button></td>
+      `;
+
+      row.querySelector('.remove-attack-row').addEventListener('click', () => {
+        row.remove();
+      });
+
+      tbody.appendChild(row);
+    });
+  }
   
   alert(`Character "${characterName}" loaded successfully!`);
 });
+
 
 // Clear form
 document.getElementById('clear-form').addEventListener('click', () => {
