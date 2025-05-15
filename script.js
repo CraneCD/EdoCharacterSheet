@@ -876,10 +876,20 @@ document.getElementById('clear-form').addEventListener('click', () => {
   }
 });
 
-// Export as PDF (stub - would require additional libraries for implementation)
+// Export as PDF 
 document.getElementById('export-pdf').addEventListener('click', () => {
-  alert('PDF export functionality would require a PDF generation library like jsPDF or a server-side component. For now, you can save your character data and print the page using your browser.');
-  window.print();
+  const sheet = document.querySelector('.container'); // Or your top-level element
+  const name = document.getElementById('character-name').value || 'character';
+
+  const opt = {
+    margin:       0.5,
+    filename:     `${name}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(sheet).save();
 });
 
 // Initialize the form
