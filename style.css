@@ -1,6 +1,7 @@
 :root {
   --primary: #7b241c;
   --secondary: #e6ccb2;
+  --secondary-bg: #f8f9fa;
   --background: #f5f5f5;
   --text: #333;
 }
@@ -303,4 +304,38 @@ button:hover {
   .combat-info {
     grid-template-columns: 1fr;
   }
+}
+
+#class-resources {
+  margin-bottom: 20px;
+}
+
+.resource-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: var(--secondary-bg);
+}
+
+.resource-item label {
+  flex: 2;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.resource-item input {
+  flex: 1;
+  max-width: 80px;
+  margin-bottom: 0;
+}
+
+.resource-item .resource-description {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 4px;
+  flex-basis: 100%;
 }
