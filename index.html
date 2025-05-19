@@ -10,9 +10,15 @@
 <body>
   <div class="container">
     <header>
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div class="header-content">
         <h1>Edo's Character Sheet</h1>
-        <button class="nav-button" onclick="window.open('spell-lookup.html', '_blank')">Open Spell Database</button>
+        <div class="header-buttons">
+          <button class="nav-button" onclick="window.open('spell-lookup.html', '_blank')">Open Spell Database</button>
+          <button id="theme-toggle" class="nav-button">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-text">Dark Mode</span>
+          </button>
+        </div>
       </div>
     </header>
     
